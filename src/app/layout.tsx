@@ -12,12 +12,12 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body>
-        <Providers>
-          <StoreProvider>
+        <StoreProvider>
+          <Providers>
             <Nav />
             {children}
-          </StoreProvider>
-        </Providers>
+          </Providers>
+        </StoreProvider>
       </body>
     </html>
   );

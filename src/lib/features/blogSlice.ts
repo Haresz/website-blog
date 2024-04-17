@@ -8,7 +8,7 @@ const initialState: { blogs: [] } = {
 
 const actionGetBlog = createAsyncThunk("blogs/actionGetBlog", async () => {
   const response = await getDataBlog();
-  return response.data.result;
+  return response.data;
 });
 
 export const blogsSlice = createSlice({

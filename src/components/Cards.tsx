@@ -15,7 +15,7 @@ import Link from "next/link";
 import React from "react";
 import AddBlog from "./AddBlog";
 
-export default function Cards() {
+export default function Cards(props: any) {
   const { isOpen, onOpen, onClose } = useDisclosure();
   return (
     <Card my={8} maxW="xl">
@@ -25,17 +25,18 @@ export default function Cards() {
             <Avatar name="Segun Adebayo" src="https://bit.ly/sage-adebayo" />
 
             <Box>
-              <Heading size="sm">Segun Adebayo</Heading>
+              <Heading size="sm">User</Heading>
               <Text>Creator, Chakra UI</Text>
             </Box>
           </Flex>
         </Flex>
       </CardHeader>
       <CardBody>
-        <Text>
-          With Chakra UI, I wanted to sync the speed of development with the
-          speed of design. I wanted the developer to be just as excited as the
-          designer to create a screen.
+        <Heading as={"h2"} size={"md"}>
+          {props.title}
+        </Heading>
+        <Text className="text-ellipsis overflow-hidden line-clamp-2 ">
+          {props.content}
         </Text>
       </CardBody>
       <CardFooter gap={2}>

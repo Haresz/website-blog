@@ -1,5 +1,5 @@
-import Axios from "axios";
+import axios from "axios";
 
 export function getDataBlog() {
-  return Axios.get(`https://gorest.co.in/public/v2/posts`);
+  return axios.get(`https://gorest.co.in/public/v2/posts`);
 }
