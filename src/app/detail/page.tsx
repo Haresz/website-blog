@@ -1,13 +1,10 @@
 import React from "react";
 import { Heading, Image, Text } from "@chakra-ui/react";
+import Nav from "@/components/Nav";
 
 export default function page() {
   return (
     <div>
-      <div className="w-full py-8 px-20 bg-white font-bold text-2xl text-black border-b-2">
-        Your Name
-      </div>
-
       <div className="">
         <Image
           className="w-full h-96"
