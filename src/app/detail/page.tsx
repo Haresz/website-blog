@@ -1,6 +1,5 @@
 import React from "react";
 import { Heading, Image, Text } from "@chakra-ui/react";
-import Nav from "@/components/Nav";
 
 export default function page() {
   return (

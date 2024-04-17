@@ -2,6 +2,7 @@
 import { Providers } from "./providers";
 import "../app/globals.css";
 import Nav from "@/components/Nav";
+import StoreProvider from "./StoreProvider";
 
 export default function RootLayout({
   children,
@@ -12,8 +13,10 @@ export default function RootLayout({
     <html lang="en">
       <body>
         <Providers>
-          <Nav />
-          {children}
+          <StoreProvider>
+            <Nav />
+            {children}
+          </StoreProvider>
         </Providers>
       </body>
     </html>
