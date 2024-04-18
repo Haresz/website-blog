@@ -5,16 +5,27 @@ import Cards from "@/components/Cards";
 import InputSearch from "@/components/InputSearch";
 import { useAppSelector } from "@/lib/hooks";
 import { RootState } from "@/lib/store";
-import { Box, HStack, Tooltip, useDisclosure } from "@chakra-ui/react";
+import { HStack, Tooltip, useDisclosure, useToast } from "@chakra-ui/react";
 import { PlusSquare } from "@phosphor-icons/react/dist/ssr";
 import React, { useEffect, useState } from "react";
+import Cookies from "js-cookie";
+import { redirect } from "next/navigation";
 
-export default function page() {
+export default function page({
+  searchParams,
+}: {
+  searchParams?: {
+    query?: string;
+    page?: string;
+  };
+}) {
+  const query = searchParams?.query || "";
   const [users, setUsers] = useState([]);
   const { isOpen, onOpen, onClose } = useDisclosure();
   const blogs: any = useAppSelector(
     (state: RootState) => state.blogSlice.blogs
   );
+  const toast = useToast();
 
   const actionGetUser = async () => {
     const response = await getDataUser();
@@ -24,6 +35,23 @@ export default function page() {
   useEffect(() => {
     actionGetUser();
   }, []);
+
+  const filterBlogByQuery = (blog: any) => {
+    return blog.title.toLowerCase().includes(query.toLowerCase());
+  };
+
+  useEffect(() => {
+    const token = Cookies.get("token");
+    if (!token) {
+      toast({
+        title: "Token expired",
+        status: "error",
+        duration: 2000,
+        isClosable: true,
+      });
+      redirect("/");
+    }
+  });
   return (
     <div>
       <HStack alignItems={"center"}>
@@ -37,7 +65,7 @@ export default function page() {
         </Tooltip>
       </HStack>
       <div className="mx-20 flex flex-wrap justify-between">
-        {blogs.map((item: any) => {
+        {blogs.filter(filterBlogByQuery).map((item: any) => {
           const user: any = users.find((user: any) => {});
           if (user) {
             return (

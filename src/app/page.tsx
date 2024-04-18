@@ -39,7 +39,9 @@ export default function Home({
   }, []);
 
   const filterBlogByQuery = (blog: any) => {
-    return blog.title.toLowerCase().includes(query.toLowerCase());
+    return (
+      blog?.title && blog.title.toLowerCase().includes(query.toLowerCase())
+    );
   };
 
   return (
@@ -53,7 +55,10 @@ export default function Home({
       <InputSearch />
       <div className="mx-20 flex flex-wrap justify-between">
         {blogs.filter(filterBlogByQuery).map((item: any) => {
-          const user: any = users.find((user: any) => {});
+          const user: any = users.find((user: any) => {
+            return item.user_id === user.id; // tambahkan return di sini
+          });
+
           if (user) {
             return (
               <Cards
