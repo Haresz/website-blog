@@ -10,6 +10,7 @@ import {
   Text,
   Button,
   useDisclosure,
+  Badge,
 } from "@chakra-ui/react";
 import Link from "next/link";
 import React from "react";
@@ -22,35 +23,41 @@ export default function Cards(props: any) {
       <CardHeader>
         <Flex className="gap-4">
           <Flex flex="1" gap="4" alignItems="center" flexWrap="wrap">
-            <Avatar name="Segun Adebayo" src="https://bit.ly/sage-adebayo" />
+            <Avatar src="https://bit.ly/broken-link" />
 
             <Box>
-              <Heading size="sm">User</Heading>
-              <Text>Creator, Chakra UI</Text>
+              <Heading size="sm">{props.user}</Heading>
+              <Text>
+                {props.status == "active" ? (
+                  <Badge colorScheme="green">Active</Badge>
+                ) : (
+                  <Badge colorScheme="yellow">Inactive</Badge>
+                )}
+              </Text>
             </Box>
           </Flex>
         </Flex>
       </CardHeader>
-      <CardBody>
-        <Heading as={"h2"} size={"md"}>
+      <CardBody py={1}>
+        <Heading className="truncate" as={"h2"} size={"md"}>
           {props.title}
         </Heading>
         <Text className="text-ellipsis overflow-hidden line-clamp-2 ">
           {props.content}
         </Text>
       </CardBody>
-      <CardFooter gap={2}>
-        <Link href={"/detail"}>
+      <CardFooter py={2} gap={2}>
+        <Link href={`/detail/${props.id}`}>
           <Button variant="outline" colorScheme="blue">
             View here
           </Button>
         </Link>
-        <Button variant="outline" colorScheme="red">
+        {/* <Button variant="outline" colorScheme="red">
           Delete
         </Button>
         <Button onClick={onOpen} variant="outline" colorScheme="yellow">
           Edit
-        </Button>
+        </Button> */}
       </CardFooter>
       <AddBlog isOpen={isOpen} onClose={onClose} />
     </Card>

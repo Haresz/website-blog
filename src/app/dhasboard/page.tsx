@@ -1,13 +1,29 @@
 "use client";
+import { getDataUser } from "@/api/user";
 import AddBlog from "@/components/AddBlog";
 import Cards from "@/components/Cards";
 import InputSearch from "@/components/InputSearch";
+import { useAppSelector } from "@/lib/hooks";
+import { RootState } from "@/lib/store";
 import { Box, HStack, Tooltip, useDisclosure } from "@chakra-ui/react";
 import { PlusSquare } from "@phosphor-icons/react/dist/ssr";
-import React from "react";
+import React, { useEffect, useState } from "react";
 
 export default function page() {
+  const [users, setUsers] = useState([]);
   const { isOpen, onOpen, onClose } = useDisclosure();
+  const blogs: any = useAppSelector(
+    (state: RootState) => state.blogSlice.blogs
+  );
+
+  const actionGetUser = async () => {
+    const response = await getDataUser();
+    setUsers(response.data);
+  };
+
+  useEffect(() => {
+    actionGetUser();
+  }, []);
   return (
     <div>
       <HStack alignItems={"center"}>
@@ -15,16 +31,37 @@ export default function page() {
         <Tooltip label="Add Blog" aria-label="A tooltip">
           <PlusSquare
             onClick={onOpen}
-            className="mt-20 mb-10 text-gray-700"
+            className="mt-10 mb-10 text-gray-700"
             size={46}
           />
         </Tooltip>
       </HStack>
       <div className="mx-20 flex flex-wrap justify-between">
-        <Cards />
-        <Cards />
-        <Cards />
-        <Cards />
+        {blogs.map((item: any) => {
+          const user: any = users.find((user: any) => {});
+          if (user) {
+            return (
+              <Cards
+                key={item.id}
+                id={item.id}
+                title={item.title}
+                content={item.body}
+                user={user.name}
+                status={user.status}
+              />
+            );
+          }
+          return (
+            <Cards
+              key={item.id}
+              id={item.id}
+              title={item.title}
+              content={item.body}
+              user={"username"}
+              status={"active"}
+            />
+          );
+        })}
       </div>
       <AddBlog isOpen={isOpen} onClose={onClose} />
     </div>
