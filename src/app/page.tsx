@@ -8,11 +8,19 @@ import { useAppSelector, useAppStore } from "@/lib/hooks";
 import { RootState } from "@/lib/store";
 import { Heading } from "@chakra-ui/react";
 
-export default function Home() {
+export default function Home({
+  searchParams,
+}: {
+  searchParams?: {
+    query?: string;
+    page?: string;
+  };
+}) {
   const [users, setUsers] = useState([]);
   const blogs: any = useAppSelector(
     (state: RootState) => state.blogSlice.blogs
   );
+  const query = searchParams?.query || "";
   const store = useAppStore();
   const initialized: any = useRef(false);
 
@@ -30,6 +38,10 @@ export default function Home() {
     actionGetUser();
   }, []);
 
+  const filterBlogByQuery = (blog: any) => {
+    return blog.title.toLowerCase().includes(query.toLowerCase());
+  };
+
   return (
     <div>
       <Heading
@@ -40,7 +52,7 @@ export default function Home() {
       </Heading>
       <InputSearch />
       <div className="mx-20 flex flex-wrap justify-between">
-        {blogs.map((item: any) => {
+        {blogs.filter(filterBlogByQuery).map((item: any) => {
           const user: any = users.find((user: any) => {});
           if (user) {
             return (

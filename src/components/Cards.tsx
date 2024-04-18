@@ -19,7 +19,7 @@ import AddBlog from "./AddBlog";
 export default function Cards(props: any) {
   const { isOpen, onOpen, onClose } = useDisclosure();
   return (
-    <Card my={8} maxW="xl">
+    <Card my={8} maxW={props.comment ? "md" : "xl"}>
       <CardHeader>
         <Flex className="gap-4">
           <Flex flex="1" gap="4" alignItems="center" flexWrap="wrap">
@@ -27,13 +27,17 @@ export default function Cards(props: any) {
 
             <Box>
               <Heading size="sm">{props.user}</Heading>
-              <Text>
-                {props.status == "active" ? (
-                  <Badge colorScheme="green">Active</Badge>
-                ) : (
-                  <Badge colorScheme="yellow">Inactive</Badge>
-                )}
-              </Text>
+              {props.comment == true ? (
+                <Text fontSize="sm">{props.email}</Text>
+              ) : (
+                <Text>
+                  {props.status == "active" ? (
+                    <Badge colorScheme="green">Active</Badge>
+                  ) : (
+                    <Badge colorScheme="yellow">Inactive</Badge>
+                  )}
+                </Text>
+              )}
             </Box>
           </Flex>
         </Flex>
@@ -47,17 +51,21 @@ export default function Cards(props: any) {
         </Text>
       </CardBody>
       <CardFooter py={2} gap={2}>
-        <Link href={`/detail/${props.id}`}>
-          <Button variant="outline" colorScheme="blue">
-            View here
-          </Button>
-        </Link>
-        {/* <Button variant="outline" colorScheme="red">
+        {
+          props.comment == true ? null : (
+            <Link href={`/detail/${props.id}`}>
+              <Button variant="outline" colorScheme="blue">
+                View here
+              </Button>
+            </Link>
+          )
+          /* <Button variant="outline" colorScheme="red">
           Delete
         </Button>
         <Button onClick={onOpen} variant="outline" colorScheme="yellow">
           Edit
-        </Button> */}
+        </Button> */
+        }
       </CardFooter>
       <AddBlog isOpen={isOpen} onClose={onClose} />
     </Card>
