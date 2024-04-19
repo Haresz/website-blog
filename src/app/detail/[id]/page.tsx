@@ -42,7 +42,6 @@ export default function page() {
     actionGetUser();
   }, [blog]);
 
-  console.log(blog);
   return (
     <>
       <>
@@ -72,7 +71,7 @@ export default function page() {
               key={item.id}
               user={item.name}
               content={item.body}
-              comment={true}
+              type="comment"
               email={item.email}
             />
           );

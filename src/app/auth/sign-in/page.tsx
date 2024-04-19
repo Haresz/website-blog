@@ -25,6 +25,8 @@ export default function page() {
   const store = useAppStore();
   const initialized = useRef(false);
 
+  console.log(users);
+
   const getUser = async () => {
     try {
       const response = await getDataUser();

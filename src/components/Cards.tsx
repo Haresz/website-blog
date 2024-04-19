@@ -11,15 +11,44 @@ import {
   Button,
   useDisclosure,
   Badge,
+  useToast,
 } from "@chakra-ui/react";
 import Link from "next/link";
-import React from "react";
+import React, { useState } from "react";
 import AddBlog from "./AddBlog";
+import { deleteBlogs, getDetailBlog } from "@/api/blog";
+import EditBlog from "./EditBlog";
 
 export default function Cards(props: any) {
   const { isOpen, onOpen, onClose } = useDisclosure();
+  const [detail, setDetail] = useState();
+  const toast = useToast();
+
+  const actionGetDetail = async (id: any) => {
+    onOpen();
+    const response = await getDetailBlog(id);
+    setDetail(response.data);
+  };
+
+  const actiondelete = async (id: any) => {
+    const response = await deleteBlogs(id);
+    console.log(response);
+    if (response.status != 204) {
+      toast({
+        title: `edit blog failed`,
+        status: "error",
+        isClosable: true,
+      });
+    }
+    toast({
+      title: `edit blog succesfully`,
+      status: "success",
+      isClosable: true,
+    });
+  };
+
   return (
-    <Card my={8} maxW={props.comment ? "md" : "xl"}>
+    <Card my={8} maxW={props.comment == true ? "md" : "xl"}>
       <CardHeader>
         <Flex className="gap-4">
           <Flex flex="1" gap="4" alignItems="center" flexWrap="wrap">
@@ -51,23 +80,37 @@ export default function Cards(props: any) {
         </Text>
       </CardBody>
       <CardFooter py={2} gap={2}>
-        {
-          props.comment == true ? null : (
-            <Link href={`/detail/${props.id}`}>
-              <Button variant="outline" colorScheme="blue">
-                View here
-              </Button>
-            </Link>
-          )
-          /* <Button variant="outline" colorScheme="red">
-          Delete
-        </Button>
-        <Button onClick={onOpen} variant="outline" colorScheme="yellow">
-          Edit
-        </Button> */
-        }
+        {props.type == "comment" ? null : props.type == "dashboard" ? (
+          <Box>
+            <Button variant="outline" colorScheme="blue">
+              View here
+            </Button>
+            <Button
+              onClick={() => actiondelete(props.id)}
+              mx={2}
+              variant="outline"
+              colorScheme="red"
+            >
+              Delete
+            </Button>
+            <Button
+              onClick={() => actionGetDetail(props.id)}
+              variant="outline"
+              colorScheme="yellow"
+            >
+              Edit
+            </Button>
+          </Box>
+        ) : (
+          <Link href={`/detail/${props.id}`}>
+            <Button variant="outline" colorScheme="blue">
+              View here
+            </Button>
+          </Link>
+        )}
       </CardFooter>
       <AddBlog isOpen={isOpen} onClose={onClose} />
+      <EditBlog blog={detail} isOpen={isOpen} onClose={onClose} />
     </Card>
   );
 }

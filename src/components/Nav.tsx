@@ -14,8 +14,6 @@ import { SignOut, Toolbox, UserCircle } from "@phosphor-icons/react/dist/ssr";
 import Link from "next/link";
 import React, { useEffect, useState } from "react";
 import Cookies from "js-cookie";
-import { useAppSelector } from "@/lib/hooks";
-import { RootState } from "@/lib/store";
 
 export default function Nav() {
   const [token, setToken] = useState("");

@@ -34,7 +34,7 @@ export default function page({
 
   useEffect(() => {
     actionGetUser();
-  }, []);
+  }, [blogs]);
 
   const filterBlogByQuery = (blog: any) => {
     return blog.title.toLowerCase().includes(query.toLowerCase());
@@ -76,6 +76,7 @@ export default function page({
                 content={item.body}
                 user={user.name}
                 status={user.status}
+                type="dashboard"
               />
             );
           }
@@ -87,6 +88,7 @@ export default function page({
               content={item.body}
               user={"username"}
               status={"active"}
+              type="dashboard"
             />
           );
         })}

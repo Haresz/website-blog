@@ -26,6 +26,41 @@ export function getComentsBlogs(id: any) {
   });
 }
 
-export function addBlogs(id: any) {
-  return axios.get(`https://gorest.co.in/public/v2/users/${id}/posts`);
+export function addBlogs(user_id: number, title: string, body: string) {
+  return axios.post(
+    `https://gorest.co.in/public/v2/users/${user_id}/posts`,
+    {
+      user_id,
+      title,
+      body,
+    },
+    {
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+    }
+  );
+}
+
+export function updateBlogs(blogId: number, title: string, body: string) {
+  return axios.patch(
+    `https://gorest.co.in/public/v2/posts/${blogId}`,
+    {
+      title,
+      body,
+    },
+    {
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+    }
+  );
+}
+
+export function deleteBlogs(blogId: number) {
+  return axios.delete(`https://gorest.co.in/public/v2/posts/${blogId}`, {
+    headers: {
+      Authorization: `Bearer ${token}`,
+    },
+  });
 }
