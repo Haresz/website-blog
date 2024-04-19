@@ -10,7 +10,7 @@ import { v4 as uuidv4 } from "uuid";
 import { useRouter } from "next/navigation";
 import { useAppSelector, useAppStore } from "@/lib/hooks";
 import { RootState } from "@/lib/store";
-import { actionGetBlog } from "@/lib/features/blogSlice";
+import { actionGetUser } from "@/lib/features/userSlice";
 
 const loginSchema = Yup.object().shape({
   name: Yup.string().required("input required"),
@@ -23,16 +23,15 @@ export default function page() {
   const router = useRouter();
   const user: any = useAppSelector((state: RootState) => state.userSlice.user);
   const store = useAppStore();
-  const initialized: any = useRef(false);
-  if (!initialized.current) {
-    store.dispatch(actionGetBlog());
-    initialized.current = true;
-    localStorage.setItem("user", user);
-  }
+  const initialized = useRef(false);
 
   const getUser = async () => {
-    const reponse = await getDataUser();
-    setUsers(reponse.data);
+    try {
+      const response = await getDataUser();
+      setUsers(response.data);
+    } catch (error) {
+      console.error("Error fetching user data:", error);
+    }
   };
 
   useEffect(() => {
@@ -40,23 +39,38 @@ export default function page() {
   }, []);
 
   const handleLogin = (values: { name: string; email: string }) => {
-    users.find(
+    const foundUser: any = users.find(
       (user: any) => user.name === values.name && user.email === values.email
     );
-    if (!users) {
+    if (!foundUser) {
       toast({
-        title: `user not found`,
+        title: `User not found`,
         status: "error",
         isClosable: true,
       });
+      return;
     }
+
+    if (!initialized.current) {
+      // Dispatch action to store user data after successful login
+      store.dispatch(actionGetUser(foundUser.id));
+      initialized.current = true;
+    }
+
+    // Simpan data pengguna ke local storage
+    localStorage.setItem("userData", JSON.stringify(foundUser));
+
     toast({
-      title: `login succesfully`,
+      title: `Login successful`,
       status: "success",
       isClosable: true,
     });
-    var inThirtyMinutes = new Date(new Date().getTime() + 30 * 60 * 1000);
+
+    // Set token in cookie
+    const inThirtyMinutes = new Date(new Date().getTime() + 30 * 60 * 1000);
     Cookies.set("token", uuidv4(), { expires: inThirtyMinutes });
+
+    // Redirect user to home page
     router.push("/");
   };
 

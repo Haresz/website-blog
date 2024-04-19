@@ -19,17 +19,27 @@ import { RootState } from "@/lib/store";
 
 export default function Nav() {
   const [token, setToken] = useState("");
+  const [userData, setUserData] = useState<any>({});
   const toast = useToast();
-  const user: any = useAppSelector((state: RootState) => state.userSlice.user);
 
   useEffect(() => {
     const tokenFromCookie: any = Cookies.get("token");
     setToken(tokenFromCookie);
 
+    const storedUserData = localStorage.getItem("userData");
+    if (storedUserData) {
+      setUserData(JSON.parse(storedUserData));
+    }
+
     const tokenInterval = setInterval(() => {
       const updatedToken: any = Cookies.get("token");
       if (updatedToken !== token) {
         setToken(updatedToken);
+      }
+
+      const updatedUserData = localStorage.getItem("userData");
+      if (updatedUserData) {
+        setUserData(JSON.parse(updatedUserData));
       }
     }, 5000);
 
@@ -38,18 +48,22 @@ export default function Nav() {
 
   const handleLogOut = () => {
     Cookies.remove("token");
+    localStorage.removeItem("userData");
     setToken("");
+    setUserData({});
     toast({
-      title: `Your Log Out`,
+      title: `You've logged out`,
       status: "info",
       isClosable: true,
     });
   };
 
   return (
-    <Box className="w-full py-8 px-20 flex justify-between bg-white  border-b-2 font-bold text-black">
+    <Box className="w-full py-8 px-20 flex justify-between bg-white border-b-2 font-bold text-black">
       <Link href={"/"}>
-        <Text fontSize={"3xl"}>{!user.name ? "Your Name" : user.name}</Text>
+        <Text fontSize={"3xl"}>
+          {!userData.name ? "Your Name" : userData.name}
+        </Text>
       </Link>
       <HStack gap={4}>
         {!token ? (
@@ -65,7 +79,7 @@ export default function Nav() {
           </>
         ) : (
           <>
-            <Link href={"/dhasboard"}>
+            <Link href={"/dashboard"}>
               <Toolbox size={38} />
             </Link>
             <Menu>
@@ -76,8 +90,7 @@ export default function Nav() {
                 <MenuItem onClick={() => handleLogOut()}>
                   <SignOut size={32} />
                   <Text ml={3} fontSize="lg" fontWeight={"semibold"}>
-                    {" "}
-                    LogOut
+                    Log Out
                   </Text>
                 </MenuItem>
               </MenuList>

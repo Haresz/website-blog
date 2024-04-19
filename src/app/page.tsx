@@ -6,7 +6,7 @@ import InputSearch from "@/components/InputSearch";
 import { actionGetBlog } from "@/lib/features/blogSlice";
 import { useAppSelector, useAppStore } from "@/lib/hooks";
 import { RootState } from "@/lib/store";
-import { Heading } from "@chakra-ui/react";
+import { Heading, Button } from "@chakra-ui/react";
 
 export default function Home({
   searchParams,
@@ -17,25 +17,35 @@ export default function Home({
   };
 }) {
   const [users, setUsers] = useState([]);
+  const [loading, setLoading] = useState(false);
   const blogs: any = useAppSelector(
     (state: RootState) => state.blogSlice.blogs
   );
   const query = searchParams?.query || "";
   const store = useAppStore();
-  const initialized: any = useRef(false);
+  const initialized = useRef(false);
 
-  if (!initialized.current) {
-    store.dispatch(actionGetBlog());
-    initialized.current = true;
-  }
+  useEffect(() => {
+    if (!initialized.current) {
+      store.dispatch(actionGetBlog());
+      initialized.current = true;
+    }
+  }, []);
 
-  const actionGetUser = async () => {
-    const response = await getDataUser();
-    setUsers(response.data);
+  const getUsers = async () => {
+    setLoading(true);
+    try {
+      const response = await getDataUser();
+      setUsers(response.data);
+    } catch (error) {
+      console.error("Error fetching user data:", error);
+    } finally {
+      setLoading(false);
+    }
   };
 
   useEffect(() => {
-    actionGetUser();
+    getUsers();
   }, []);
 
   const filterBlogByQuery = (blog: any) => {
@@ -54,34 +64,55 @@ export default function Home({
       </Heading>
       <InputSearch />
       <div className="mx-20 flex flex-wrap justify-between">
-        {blogs.filter(filterBlogByQuery).map((item: any) => {
-          const user: any = users.find((user: any) => {
-            return item.user_id === user.id; // tambahkan return di sini
-          });
+        {loading ? (
+          <p>Loading...</p>
+        ) : (
+          <>
+            {blogs?.length > 0 ? (
+              blogs.filter(filterBlogByQuery).map((item: any) => {
+                const user: any = users.find((user: any) => {
+                  return item.user_id === user.id;
+                });
 
-          if (user) {
-            return (
-              <Cards
-                key={item.id}
-                id={item.id}
-                title={item.title}
-                content={item.body}
-                user={user.name}
-                status={user.status}
-              />
-            );
-          }
-          return (
-            <Cards
-              key={item.id}
-              id={item.id}
-              title={item.title}
-              content={item.body}
-              user={"username"}
-              status={"active"}
-            />
-          );
-        })}
+                if (user) {
+                  return (
+                    <Cards
+                      key={item.id}
+                      id={item.id}
+                      title={item.title}
+                      content={item.body}
+                      user={user.name}
+                      status={user.status}
+                    />
+                  );
+                }
+                return (
+                  <Cards
+                    key={item.id}
+                    id={item.id}
+                    title={item.title}
+                    content={item.body}
+                    user={"username"}
+                    status={"active"}
+                  />
+                );
+              })
+            ) : (
+              <div className="mx-20">
+                <p>No blogs found</p>
+                <Button
+                  onClick={getUsers}
+                  isLoading={loading}
+                  loadingText="Reloading..."
+                  colorScheme="blue"
+                  mt={4}
+                >
+                  Reload
+                </Button>
+              </div>
+            )}
+          </>
+        )}
       </div>
     </div>
   );

@@ -1,4 +1,4 @@
-import { getDataUser, getDetailUser } from "@/api/user";
+import { getDetailUser } from "@/api/user";
 import { createSlice } from "@reduxjs/toolkit";
 import { createAsyncThunk } from "@reduxjs/toolkit";
 
@@ -7,9 +7,9 @@ const initialState: { user: {} } = {
 };
 
 const actionGetUser = createAsyncThunk(
-  "blogs/actionGetBlog",
-  async (id: any) => {
-    const response = await getDetailUser(id);
+  "users/actionGetUser",
+  async (userId: string) => {
+    const response = await getDetailUser(userId);
     return response.data;
   }
 );
@@ -21,6 +21,7 @@ const userSlice = createSlice({
   extraReducers: (builder) => {
     builder.addCase(actionGetUser.fulfilled, (state, action) => {
       state.user = action.payload;
+      console.log(state.user, action.payload, "userSlice");
     });
   },
 });

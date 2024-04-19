@@ -25,6 +25,7 @@ export function getComentsBlogs(id: any) {
     },
   });
 }
-// export function addBlogs(id: any) {
-//   return axios.get(`https://gorest.co.in/public/v2/posts/${id}/comments`);
-// }
+
+export function addBlogs(id: any) {
+  return axios.get(`https://gorest.co.in/public/v2/users/${id}/posts`);
+}
