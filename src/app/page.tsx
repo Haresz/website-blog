@@ -55,13 +55,14 @@ export default function Home({
   return (
     <div>
       <Heading
-        style={{ fontSize: "200px" }}
+        as="h1"
+        size="4xl"
         className="w-full text-center font-black border-b-2 py-8"
       >
         THE BLOG
       </Heading>
       <InputSearch />
-      <div className="mx-20 flex flex-wrap justify-between">
+      <div className="sm:mx-20 mx-4 flex flex-wrap justify-between">
         {loading ? (
           <Spinner />
         ) : (

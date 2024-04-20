@@ -11,6 +11,8 @@ import {
   useDisclosure,
   useToast,
   Spinner,
+  Center,
+  Text,
 } from "@chakra-ui/react";
 import { PlusSquare } from "@phosphor-icons/react/dist/ssr";
 import React, { useEffect, useState } from "react";
@@ -98,7 +100,13 @@ export default function Page({
       </HStack>
       <div className="mx-20 flex flex-wrap justify-between">
         {loading ? (
-          <Spinner />
+          <Center w="100%" h="100vh">
+            <Spinner />
+          </Center>
+        ) : filteredBlogs.filter(filterBlogByQuery).length === 0 ? (
+          <Center w="100%" h="50vh">
+            <Text>No blogs found.</Text>
+          </Center>
         ) : (
           filteredBlogs
             .filter(filterBlogByQuery)

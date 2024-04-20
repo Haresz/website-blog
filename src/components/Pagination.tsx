@@ -5,7 +5,7 @@ export default function Pagination(props: any) {
   const { page, setPage, maxPage = 10 } = props;
 
   return (
-    <div className="flex mx-20 mt-8 mb-16">
+    <div className="flex sm:mx-20 mx-1 mt-8 mb-16">
       <button
         onClick={() => (page >= 2 ? setPage(page - 1) : null)}
         className="btn-pagination"

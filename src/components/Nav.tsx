@@ -57,7 +57,7 @@ export default function Nav() {
   };
 
   return (
-    <Box className="w-full py-8 px-20 flex justify-between bg-white border-b-2 font-bold text-black">
+    <Box className="w-full py-8 sm:px-20 px-4 flex justify-between bg-white border-b-2 font-bold text-black">
       <Link href={"/"}>
         <Text fontSize={"3xl"}>
           {!userData.name ? "Your Name" : userData.name}

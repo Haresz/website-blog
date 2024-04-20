@@ -51,20 +51,22 @@ export default function Page() {
           src="https://images.unsplash.com/photo-1531403009284-440f080d1e12?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1770&q=80"
           alt="Chakra UI"
         />
-        <Heading className="mx-20 mt-20 mb-4">{blog?.title}</Heading>
-        <HStack className="mx-20">
+        <Heading className="sm:mx-20 mx-4 mt-20 mb-4 text-start">
+          {blog?.title}
+        </Heading>
+        <HStack justifyContent={"left"} className="sm:mx-20 mx-4">
           <Text fontSize={"md"}>Author :</Text>
           <Heading size={"sm"}>{user}</Heading>
         </HStack>
 
-        <Text className="m-20 font-normal text-justify text-lg">
+        <Text className="sm:m-20 m-4 mt-10 font-normal text-justify text-lg">
           {blog?.body}
         </Text>
       </>
-      <Heading className="mx-20" size={"md"}>
+      <Heading className="sm:mx-20 mx-4" size={"md"}>
         Coment
       </Heading>
-      <HStack className="mx-20">
+      <HStack className="sm:mx-20 mx-4">
         {comments?.map((item: any) => {
           return (
             <Cards

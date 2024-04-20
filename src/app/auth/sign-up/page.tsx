@@ -17,11 +17,7 @@ const userSchema = Yup.object().shape({
 export default function Page() {
   const toast = useToast();
   const router = useRouter();
-  const actionGetComent = async (values: {
-    name: string;
-    email: string;
-    gender: string;
-  }) => {
+  const actionGetComent = async (values: any) => {
     const response = await registerUser(
       values.name,
       values.email,
