@@ -6,10 +6,13 @@ const initialState: { blogs: [] } = {
   blogs: [],
 };
 
-const actionGetBlog = createAsyncThunk("blogs/actionGetBlog", async () => {
-  const response = await getDataBlog();
-  return response.data;
-});
+const actionGetBlog = createAsyncThunk(
+  "blogs/actionGetBlog",
+  async (page: number) => {
+    const response = await getDataBlog(page);
+    return response.data;
+  }
+);
 
 export const blogsSlice = createSlice({
   name: "blogsSlice",

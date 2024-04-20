@@ -5,13 +5,20 @@ import Cards from "@/components/Cards";
 import InputSearch from "@/components/InputSearch";
 import { useAppSelector } from "@/lib/hooks";
 import { RootState } from "@/lib/store";
-import { HStack, Tooltip, useDisclosure, useToast } from "@chakra-ui/react";
+import {
+  HStack,
+  Tooltip,
+  useDisclosure,
+  useToast,
+  Spinner,
+} from "@chakra-ui/react";
 import { PlusSquare } from "@phosphor-icons/react/dist/ssr";
 import React, { useEffect, useState } from "react";
 import Cookies from "js-cookie";
 import { redirect } from "next/navigation";
+import Pagination from "@/components/Pagination";
 
-export default function page({
+export default function Page({
   searchParams,
 }: {
   searchParams?: {
@@ -22,18 +29,41 @@ export default function page({
   const query = searchParams?.query || "";
   const [users, setUsers] = useState([]);
   const { isOpen, onOpen, onClose } = useDisclosure();
+  const [page, setPage] = useState(1);
+  const [loading, setLoading] = useState(false);
+  const [maxPage, setMaxPage] = useState(1);
+  const itemsPerPage = 4;
   const blogs: any = useAppSelector(
     (state: RootState) => state.blogSlice.blogs
   );
+  const [filteredBlogs, setFilteredBlogs] = useState<any[]>([]);
   const toast = useToast();
 
-  const actionGetUser = async () => {
-    const response = await getDataUser();
-    setUsers(response.data);
-  };
+  useEffect(() => {
+    const fetchUserData = async () => {
+      setLoading(true);
+      try {
+        const response = await getDataUser();
+        setUsers(response.data);
+      } catch (error) {
+        console.error("Error fetching user data:", error);
+      } finally {
+        setLoading(false);
+      }
+    };
+    fetchUserData();
+  }, []);
 
   useEffect(() => {
-    actionGetUser();
+    const storedUserData: any = localStorage.getItem("userData");
+    const userData = storedUserData ? JSON.parse(storedUserData) : null;
+    if (userData) {
+      const filtered = blogs.filter(
+        (blog: any) => blog.user_id === userData.id
+      );
+      setFilteredBlogs(filtered);
+      setMaxPage(Math.ceil(filtered.length / itemsPerPage));
+    }
   }, [blogs]);
 
   const filterBlogByQuery = (blog: any) => {
@@ -41,6 +71,7 @@ export default function page({
   };
 
   useEffect(() => {
+    // Check token validity
     const token = Cookies.get("token");
     if (!token) {
       toast({
@@ -51,10 +82,11 @@ export default function page({
       });
       redirect("/");
     }
-  });
+  }, []);
+
   return (
     <div>
-      <HStack alignItems={"center"}>
+      <HStack alignItems="center">
         <InputSearch />
         <Tooltip label="Add Blog" aria-label="A tooltip">
           <PlusSquare
@@ -65,34 +97,26 @@ export default function page({
         </Tooltip>
       </HStack>
       <div className="mx-20 flex flex-wrap justify-between">
-        {blogs.filter(filterBlogByQuery).map((item: any) => {
-          const user: any = users.find((user: any) => {});
-          if (user) {
-            return (
+        {loading ? (
+          <Spinner />
+        ) : (
+          filteredBlogs
+            .filter(filterBlogByQuery)
+            .slice((page - 1) * itemsPerPage, page * itemsPerPage)
+            .map((item: any) => (
               <Cards
                 key={item.id}
                 id={item.id}
                 title={item.title}
                 content={item.body}
-                user={user.name}
-                status={user.status}
+                user={item.user_name || "username"}
+                status={item.status || "active"}
                 type="dashboard"
               />
-            );
-          }
-          return (
-            <Cards
-              key={item.id}
-              id={item.id}
-              title={item.title}
-              content={item.body}
-              user={"username"}
-              status={"active"}
-              type="dashboard"
-            />
-          );
-        })}
+            ))
+        )}
       </div>
+      <Pagination page={page} setPage={setPage} maxPage={maxPage} />
       <AddBlog isOpen={isOpen} onClose={onClose} />
     </div>
   );

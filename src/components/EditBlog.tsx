@@ -1,3 +1,4 @@
+"use client";
 import {
   Modal,
   ModalOverlay,
@@ -16,7 +17,7 @@ import React, { useEffect } from "react";
 import * as Yup from "yup";
 import { useFormik } from "formik";
 import InputText from "./InputText";
-import {  updateBlogs } from "@/api/blog";
+import { updateBlogs } from "@/api/blog";
 
 const blogSchema = Yup.object().shape({
   user_id: Yup.number().required("input required"),
@@ -56,6 +57,7 @@ export default function EditBlog(props: any) {
         status: "error",
         isClosable: true,
       });
+      window.location.reload();
     }
     toast({
       title: `edit blog succesfully`,

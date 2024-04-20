@@ -6,7 +6,8 @@ import InputSearch from "@/components/InputSearch";
 import { actionGetBlog } from "@/lib/features/blogSlice";
 import { useAppSelector, useAppStore } from "@/lib/hooks";
 import { RootState } from "@/lib/store";
-import { Heading, Button } from "@chakra-ui/react";
+import { Heading, Button, HStack, Text, Spinner } from "@chakra-ui/react";
+import Pagination from "@/components/Pagination";
 
 export default function Home({
   searchParams,
@@ -17,20 +18,17 @@ export default function Home({
   };
 }) {
   const [users, setUsers] = useState([]);
+  const [page, setPage] = useState(1);
   const [loading, setLoading] = useState(false);
   const blogs: any = useAppSelector(
     (state: RootState) => state.blogSlice.blogs
   );
   const query = searchParams?.query || "";
   const store = useAppStore();
-  const initialized = useRef(false);
 
   useEffect(() => {
-    if (!initialized.current) {
-      store.dispatch(actionGetBlog());
-      initialized.current = true;
-    }
-  }, []);
+    store.dispatch(actionGetBlog(page));
+  }, [page]);
 
   const getUsers = async () => {
     setLoading(true);
@@ -65,7 +63,7 @@ export default function Home({
       <InputSearch />
       <div className="mx-20 flex flex-wrap justify-between">
         {loading ? (
-          <p>Loading...</p>
+          <Spinner />
         ) : (
           <>
             {blogs?.length > 0 ? (
@@ -114,6 +112,7 @@ export default function Home({
           </>
         )}
       </div>
+      <Pagination page={page} setPage={setPage} />
     </div>
   );
 }

@@ -47,6 +47,7 @@ export default function AddBlog(props: any) {
           isClosable: true,
         });
         props.onClose();
+        window.location.reload();
       } else {
         throw new Error("Failed to add blog");
       }

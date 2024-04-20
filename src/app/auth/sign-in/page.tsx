@@ -54,12 +54,10 @@ export default function page() {
     }
 
     if (!initialized.current) {
-      // Dispatch action to store user data after successful login
       store.dispatch(actionGetUser(foundUser.id));
       initialized.current = true;
     }
 
-    // Simpan data pengguna ke local storage
     localStorage.setItem("userData", JSON.stringify(foundUser));
 
     toast({

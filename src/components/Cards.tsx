@@ -45,6 +45,7 @@ export default function Cards(props: any) {
       status: "success",
       isClosable: true,
     });
+    window.location.reload();
   };
 
   return (
@@ -82,9 +83,11 @@ export default function Cards(props: any) {
       <CardFooter py={2} gap={2}>
         {props.type == "comment" ? null : props.type == "dashboard" ? (
           <Box>
-            <Button variant="outline" colorScheme="blue">
-              View here
-            </Button>
+            <Link href={`/detail/${props.id}`}>
+              <Button variant="outline" colorScheme="blue">
+                View here
+              </Button>
+            </Link>
             <Button
               onClick={() => actiondelete(props.id)}
               mx={2}
