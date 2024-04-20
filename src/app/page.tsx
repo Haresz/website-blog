@@ -99,7 +99,7 @@ export default function Home({
               <div className="mx-20">
                 <p>No blogs found</p>
                 <Button
-                  onClick={getUsers}
+                  onClick={() => window.location.reload}
                   isLoading={loading}
                   loadingText="Reloading..."
                   colorScheme="blue"

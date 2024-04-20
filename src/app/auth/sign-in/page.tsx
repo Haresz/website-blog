@@ -17,7 +17,7 @@ const loginSchema = Yup.object().shape({
   email: Yup.string().required("input required"),
 });
 
-export default function page() {
+export default function Page() {
   const [users, setUsers] = useState([]);
   const toast = useToast();
   const router = useRouter();

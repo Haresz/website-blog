@@ -14,7 +14,7 @@ const userSchema = Yup.object().shape({
   gender: Yup.string().required("input required"),
 });
 
-export default function page() {
+export default function Page() {
   const toast = useToast();
   const router = useRouter();
   const actionGetComent = async (values: {

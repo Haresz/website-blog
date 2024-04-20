@@ -6,7 +6,7 @@ import { getComentsBlogs, getDetailBlog } from "@/api/blog";
 import Cards from "@/components/Cards";
 import { getDetailUser } from "@/api/user";
 
-export default function page() {
+export default function Page() {
   const [blog, setBlog] = useState<any>();
   const [user, setUser] = useState<any>("");
   const [comments, setComent] = useState([]);
