@@ -1,4 +1,3 @@
-"use client";
 import {
   Modal,
   ModalOverlay,
@@ -20,7 +19,6 @@ import InputText from "./InputText";
 import { updateBlogs } from "@/api/blog";
 
 const blogSchema = Yup.object().shape({
-  user_id: Yup.number().required("input required"),
   title: Yup.string().required("input required"),
   body: Yup.string().required("input required"),
 });
@@ -35,17 +33,12 @@ export default function EditBlog(props: any) {
 
   useEffect(() => {
     formik.setValues({
-      user_id: props.blog ? props.blog.user_id : "",
       title: props.blog ? props.blog.title : "",
       body: props.blog ? props.blog.body : "",
     });
-  }, []);
+  }, [props.blog]);
 
-  const actionEditBlog = async (values: {
-    user_id: number;
-    title: string;
-    body: string;
-  }) => {
+  const actionEditBlog = async (values: { title: string; body: string }) => {
     const response = await updateBlogs(
       props.blog.id,
       values.title,
@@ -55,20 +48,21 @@ export default function EditBlog(props: any) {
       toast({
         title: `edit blog failed`,
         status: "error",
+        position: "top",
         isClosable: true,
       });
-      window.location.reload();
     }
     toast({
       title: `edit blog succesfully`,
       status: "success",
+      position: "top",
       isClosable: true,
     });
+    window.location.reload();
   };
 
   const formik = useFormik({
     initialValues: {
-      user_id: "",
       title: "",
       body: "",
     },

@@ -48,6 +48,7 @@ export default function Page() {
       toast({
         title: `User not found`,
         status: "error",
+        position: "top",
         isClosable: true,
       });
       return;
@@ -63,6 +64,7 @@ export default function Page() {
     toast({
       title: `Login successful`,
       status: "success",
+      position: "top",
       isClosable: true,
     });
 

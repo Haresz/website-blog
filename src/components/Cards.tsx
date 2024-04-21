@@ -35,13 +35,15 @@ export default function Cards(props: any) {
     console.log(response);
     if (response.status != 204) {
       toast({
-        title: `edit blog failed`,
+        title: `delete blog failed`,
+        position: "top",
         status: "error",
         isClosable: true,
       });
     }
     toast({
-      title: `edit blog succesfully`,
+      title: `delete blog succesfully`,
+      position: "top",
       status: "success",
       isClosable: true,
     });

@@ -44,6 +44,7 @@ export default function AddBlog(props: any) {
         toast({
           title: `Blog added successfully`,
           status: "success",
+          position: "top",
           isClosable: true,
         });
         props.onClose();
@@ -55,6 +56,7 @@ export default function AddBlog(props: any) {
       toast({
         title: `Failed to add blog`,
         status: "error",
+        position: "top",
         isClosable: true,
       });
     }

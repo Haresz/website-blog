@@ -38,6 +38,7 @@ export default function Page() {
     if (foundUser) {
       toast({
         title: `alredy registered`,
+        position: "top",
         status: "error",
         isClosable: true,
       });
@@ -50,6 +51,7 @@ export default function Page() {
       if (response.status != 201) {
         toast({
           title: `register failed`,
+          position: "top",
           status: "error",
           isClosable: true,
         });
