@@ -73,7 +73,6 @@ export default function Page({
   };
 
   useEffect(() => {
-    // Check token validity
     const token = Cookies.get("token");
     if (!token) {
       toast({

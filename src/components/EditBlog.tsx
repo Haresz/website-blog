@@ -39,7 +39,7 @@ export default function EditBlog(props: any) {
       title: props.blog ? props.blog.title : "",
       body: props.blog ? props.blog.body : "",
     });
-  }, [props.blog]);
+  }, []);
 
   const actionEditBlog = async (values: {
     user_id: number;

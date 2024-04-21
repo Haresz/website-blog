@@ -6,7 +6,7 @@ import InputSearch from "@/components/InputSearch";
 import { actionGetBlog } from "@/lib/features/blogSlice";
 import { useAppSelector, useAppStore } from "@/lib/hooks";
 import { RootState } from "@/lib/store";
-import { Heading, Button, HStack, Text, Spinner } from "@chakra-ui/react";
+import { Heading, Button, Spinner } from "@chakra-ui/react";
 import Pagination from "@/components/Pagination";
 
 export default function Home({
@@ -28,7 +28,7 @@ export default function Home({
 
   useEffect(() => {
     store.dispatch(actionGetBlog(page));
-  }, [page]);
+  }, [page, store]);
 
   const getUsers = async () => {
     setLoading(true);
@@ -98,16 +98,7 @@ export default function Home({
               })
             ) : (
               <div className="mx-20">
-                <p>No blogs found</p>
-                <Button
-                  onClick={() => window.location.reload}
-                  isLoading={loading}
-                  loadingText="Reloading..."
-                  colorScheme="blue"
-                  mt={4}
-                >
-                  Reload
-                </Button>
+                <p>No blogs found, Refresh Your Browser</p>
               </div>
             )}
           </>
