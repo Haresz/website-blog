@@ -11,6 +11,7 @@ Website Blog is a web application developed using Next.js framework, Chakra UI f
 - **View Blog Posts:** Users can view their own blog posts as well as posts from other users.
 - **Pagination:** Blog posts are paginated to improve navigation and user experience.
 - **Responsive Design:** The application is designed to work seamlessly across various screen sizes and devices.
+- **Authentication (Login and Register):** Users can create an account to access the application. They can log in securely to manage their blog posts.
 
 ## Tools Used
 
