@@ -19,6 +19,7 @@ import React, { useEffect, useState } from "react";
 import Cookies from "js-cookie";
 import { redirect } from "next/navigation";
 import Pagination from "@/components/Pagination";
+import { getDataBlogAll } from "@/api/blog";
 
 export default function Page({
   searchParams,
@@ -30,18 +31,25 @@ export default function Page({
 }) {
   const query = searchParams?.query || "";
   const [users, setUsers] = useState([]);
+  const [blogs, setBlogs] = useState([]);
   const { isOpen, onOpen, onClose } = useDisclosure();
   const [page, setPage] = useState(1);
   const [loading, setLoading] = useState(false);
   const [maxPage, setMaxPage] = useState(1);
   const itemsPerPage = 4;
-  const blogs: any = useAppSelector(
-    (state: RootState) => state.blogSlice.blogs
-  );
+
   const [filteredBlogs, setFilteredBlogs] = useState<any[]>([]);
   const toast = useToast();
 
   useEffect(() => {
+    const getAllBlogs = async () => {
+      try {
+        const response: any = await getDataBlogAll();
+        setBlogs(response.data);
+      } catch (error) {
+        console.error("Error fetching user data:", error);
+      }
+    };
     const fetchUserData = async () => {
       setLoading(true);
       try {
@@ -54,13 +62,15 @@ export default function Page({
       }
     };
     fetchUserData();
+    getAllBlogs();
   }, []);
 
   useEffect(() => {
     const storedUserData: any = localStorage.getItem("userData");
     const userData = storedUserData ? JSON.parse(storedUserData) : null;
     if (userData) {
-      const filtered = blogs.filter(
+      console.log(blogs);
+      const filtered = blogs?.filter(
         (blog: any) => blog.user_id === userData.id
       );
       setFilteredBlogs(filtered);

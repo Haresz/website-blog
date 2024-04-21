@@ -13,6 +13,14 @@ export function getDataBlog(page: number) {
   );
 }
 
+export function getDataBlogAll() {
+  return axios.get(`https://gorest.co.in/public/v2/posts`, {
+    headers: {
+      Authorization: `Bearer ${token}`,
+    },
+  });
+}
+
 export function getDetailBlog(id: any) {
   return axios.get(`https://gorest.co.in/public/v2/posts/${id}`, {
     headers: {
