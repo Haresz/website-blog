@@ -1,11 +1,11 @@
 "use client";
 import InputText from "@/components/InputText";
 import { Box, Button, Heading, useToast } from "@chakra-ui/react";
-import React from "react";
+import React, { useEffect, useState } from "react";
 import * as Yup from "yup";
 import { useFormik } from "formik";
 import SelectGender from "@/components/SelectGender";
-import { registerUser } from "@/api/user";
+import { getDataUser, registerUser } from "@/api/user";
 import { useRouter } from "next/navigation";
 
 const userSchema = Yup.object().shape({
@@ -15,27 +15,52 @@ const userSchema = Yup.object().shape({
 });
 
 export default function Page() {
+  const [users, setUsers] = useState([]);
   const toast = useToast();
   const router = useRouter();
-  const actionGetComent = async (values: any) => {
-    const response = await registerUser(
-      values.name,
-      values.email,
-      values.gender
+
+  const getUser = async () => {
+    try {
+      const response = await getDataUser();
+      setUsers(response.data);
+    } catch (error) {
+      console.error("Error fetching user data:", error);
+    }
+  };
+
+  useEffect(() => {
+    getUser();
+  }, []);
+  const actionRegister = async (values: any) => {
+    const foundUser: any = users.find(
+      (user: any) => user.email === values.email
     );
-    if (response.status != 201) {
+    if (foundUser) {
       toast({
-        title: `register failed`,
+        title: `alredy registered`,
         status: "error",
         isClosable: true,
       });
+    } else {
+      const response = await registerUser(
+        values.name,
+        values.email,
+        values.gender
+      );
+      if (response.status != 201) {
+        toast({
+          title: `register failed`,
+          status: "error",
+          isClosable: true,
+        });
+      }
+      toast({
+        title: `register succesfully`,
+        status: "success",
+        isClosable: true,
+      });
+      router.push("/auth/sign-in");
     }
-    toast({
-      title: `register succesfully`,
-      status: "success",
-      isClosable: true,
-    });
-    router.push("/auth/sign-in");
   };
 
   const formik = useFormik({
@@ -46,7 +71,7 @@ export default function Page() {
     },
     validationSchema: userSchema,
     onSubmit: (values, { resetForm }) => {
-      actionGetComent(values);
+      actionRegister(values);
       resetForm();
     },
   });

@@ -15,9 +15,9 @@ export default function Pagination(props: any) {
       <HStack textAlign={"center"} mx={4}>
         <Text fontSize={"md"}>Page</Text>
         <Heading as="h1" size="md">
-          {page}
+          {page ? page : 0}
         </Heading>
-        <Text fontSize={"md"}>of {maxPage ? maxPage : 10} Page</Text>
+        <Text fontSize={"md"}>of {maxPage ? maxPage : 0} Page</Text>
       </HStack>
       <button
         onClick={() => (page <= maxPage - 1 ? setPage(page + 1) : null)}
