@@ -6,7 +6,7 @@ import InputSearch from "@/components/InputSearch";
 import { actionGetBlog } from "@/lib/features/blogSlice";
 import { useAppSelector, useAppStore } from "@/lib/hooks";
 import { RootState } from "@/lib/store";
-import { Heading, Button, Spinner } from "@chakra-ui/react";
+import { Heading, Spinner } from "@chakra-ui/react";
 import Pagination from "@/components/Pagination";
 
 export default function Home({

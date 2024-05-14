@@ -1,8 +1,13 @@
-// app/layout.tsx
+import type { Metadata } from "next";
 import { Providers } from "./providers";
 import "../app/globals.css";
 import Nav from "@/components/Nav";
 import StoreProvider from "./StoreProvider";
+
+export const metadata: Metadata = {
+  title: "The Blog",
+  description: "Website Block",
+};
 
 export default function RootLayout({
   children,
