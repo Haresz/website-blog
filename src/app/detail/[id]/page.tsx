@@ -1,16 +1,18 @@
 "use client";
 import React, { useEffect, useState } from "react";
-import { HStack, Heading, Image, Text } from "@chakra-ui/react";
+import { HStack, Heading, Image, Text, useDisclosure } from "@chakra-ui/react";
 import { useParams } from "next/navigation";
 import { getComentsBlogs, getDetailBlog } from "@/api/blog";
 import Cards from "@/components/Cards";
 import { getDetailUser } from "@/api/user";
 import { PlusSquare } from "@phosphor-icons/react/dist/ssr";
+import AddComent from "@/components/AddComent";
 
 export default function Page() {
   const [blog, setBlog] = useState<any>();
   const [user, setUser] = useState<any>("");
   const [comments, setComent] = useState([]);
+  const { isOpen, onOpen, onClose } = useDisclosure();
   const params = useParams();
 
   const actionGetDetail = async () => {
@@ -69,7 +71,7 @@ export default function Page() {
           Coment
         </Heading>
         <PlusSquare
-          // onClick={onOpen}
+          onClick={onOpen}
           className="mt-10 mb-10 text-gray-700 cursor-pointer"
           size={30}
         />
@@ -88,6 +90,7 @@ export default function Page() {
           );
         })}
       </HStack>
+      <AddComent isOpen={isOpen} onClose={onClose} />
     </>
   );
 }

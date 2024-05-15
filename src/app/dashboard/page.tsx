@@ -89,6 +89,7 @@ export default function Page({
         duration: 2000,
         isClosable: true,
       });
+      localStorage.removeItem("userData");
       redirect("/");
     }
   }, []);

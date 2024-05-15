@@ -34,6 +34,27 @@ export function getComentsBlogs(id: any) {
   });
 }
 
+export function addComentsBlog(
+  id_post: number,
+  name: string,
+  email: string,
+  body: string
+) {
+  return axios.post(
+    `https://gorest.co.in/public/v2/posts/${id_post}/comments`,
+    {
+      name,
+      email,
+      body,
+    },
+    {
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+    }
+  );
+}
+
 export function addBlogs(user_id: number, title: string, body: string) {
   return axios.post(
     `https://gorest.co.in/public/v2/users/${user_id}/posts`,
