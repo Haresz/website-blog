@@ -45,9 +45,7 @@ export default function Home({
       await store.dispatch(actionGetBlog(page));
       const state = store.getState() as RootState;
       const newBlogs = state.blogSlice.blogs as Blog[];
-      const dataBlogs = (prevBlogs: any) => [...prevBlogs, ...newBlogs];
-      setAllBlogs(dataBlogs);
-      setMaxPage(Math.ceil(dataBlogs.length / 4));
+      setAllBlogs((prevBlogs) => [...prevBlogs, ...newBlogs]);
     } catch (error) {
       console.error("Error fetching blogs:", error);
     } finally {
@@ -56,7 +54,7 @@ export default function Home({
   };
 
   useEffect(() => {
-    if (!allBlogs[page - 1]) {
+    if (!allBlogs[(page - 1) * 4]) {
       fetchBlogs(page);
     }
   }, [page, store, allBlogs]);
@@ -64,8 +62,9 @@ export default function Home({
   const handleData = () => {
     const startIndex = (page - 1) * 4;
     const endIndex = page * 4;
-    let data = allBlogs.filter(filterBlogByQuery).slice(startIndex, endIndex);
-    setFilteredBlogs(data);
+    const filteredData = allBlogs.filter(filterBlogByQuery);
+    setFilteredBlogs(filteredData.slice(startIndex, endIndex));
+    setMaxPage(Math.ceil(filteredData.length / 4));
   };
 
   useEffect(() => {
