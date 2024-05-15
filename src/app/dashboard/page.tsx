@@ -35,30 +35,31 @@ export default function Page({
   const [loading, setLoading] = useState(false);
   const [maxPage, setMaxPage] = useState(1);
   const itemsPerPage = 4;
-
   const [filteredBlogs, setFilteredBlogs] = useState<any[]>([]);
   const toast = useToast();
 
+  const fetchUserData = async () => {
+    setLoading(true);
+    try {
+      const response = await getDataUser();
+      setUsers(response.data);
+    } catch (error) {
+      console.error("Error fetching user data:", error);
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  const getAllBlogs = async () => {
+    try {
+      const response: any = await getDataBlogAll();
+      setBlogs(response.data);
+    } catch (error) {
+      console.error("Error fetching blogs data:", error);
+    }
+  };
+
   useEffect(() => {
-    const getAllBlogs = async () => {
-      try {
-        const response: any = await getDataBlogAll();
-        setBlogs(response.data);
-      } catch (error) {
-        console.error("Error fetching user data:", error);
-      }
-    };
-    const fetchUserData = async () => {
-      setLoading(true);
-      try {
-        const response = await getDataUser();
-        setUsers(response.data);
-      } catch (error) {
-        console.error("Error fetching user data:", error);
-      } finally {
-        setLoading(false);
-      }
-    };
     fetchUserData();
     getAllBlogs();
   }, []);
@@ -67,14 +68,19 @@ export default function Page({
     const storedUserData: any = localStorage.getItem("userData");
     const userData = storedUserData ? JSON.parse(storedUserData) : null;
     if (userData) {
-      console.log(blogs);
-      const filtered = blogs?.filter(
+      const filtered = blogs.filter(
         (blog: any) => blog.user_id === userData.id
       );
       setFilteredBlogs(filtered);
-      setMaxPage(Math.ceil(filtered.length / itemsPerPage));
+    } else {
+      setFilteredBlogs(blogs);
     }
   }, [blogs]);
+
+  useEffect(() => {
+    const filtered = filteredBlogs.filter(filterBlogByQuery);
+    setMaxPage(Math.ceil(filtered.length / itemsPerPage));
+  }, [filteredBlogs, query]);
 
   const filterBlogByQuery = (blog: any) => {
     return blog.title.toLowerCase().includes(query.toLowerCase());
