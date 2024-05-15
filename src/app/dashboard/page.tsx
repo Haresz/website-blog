@@ -3,8 +3,6 @@ import { getDataUser } from "@/api/user";
 import AddBlog from "@/components/AddBlog";
 import Cards from "@/components/Cards";
 import InputSearch from "@/components/InputSearch";
-import { useAppSelector } from "@/lib/hooks";
-import { RootState } from "@/lib/store";
 import {
   HStack,
   Tooltip,

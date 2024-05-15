@@ -3,14 +3,11 @@ const token =
   "9d6f0f34d59ab2f5e59a5344a3c46693b8fefe32d6e2242060d1cf76c95f7f9b";
 
 export function getDataBlog(page: number) {
-  return axios.get(
-    `https://gorest.co.in/public/v2/posts?page=${page}&per_page=4`,
-    {
-      headers: {
-        Authorization: `Bearer ${token}`,
-      },
-    }
-  );
+  return axios.get(`https://gorest.co.in/public/v2/posts?page=1&per_page=40`, {
+    headers: {
+      Authorization: `Bearer ${token}`,
+    },
+  });
 }
 
 export function getDataBlogAll() {
