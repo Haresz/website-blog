@@ -1,6 +1,6 @@
 import axios from "axios";
 const token =
-  "9d6f0f34d59ab2f5e59a5344a3c46693b8fefe32d6e2242060d1cf76c95f7f9b";
+  "092e3426cff176b8392b534bee70aacac44e9c2193907560792a6e052fb67960";
 
 export function getDataUser() {
   return axios.get(`https://gorest.co.in/public/v2/users`, {

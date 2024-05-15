@@ -5,6 +5,7 @@ import { useParams } from "next/navigation";
 import { getComentsBlogs, getDetailBlog } from "@/api/blog";
 import Cards from "@/components/Cards";
 import { getDetailUser } from "@/api/user";
+import { PlusSquare } from "@phosphor-icons/react/dist/ssr";
 
 export default function Page() {
   const [blog, setBlog] = useState<any>();
@@ -63,10 +64,18 @@ export default function Page() {
           {blog?.body}
         </Text>
       </>
-      <Heading className="sm:mx-20 mx-4" size={"md"}>
-        Coment
-      </Heading>
-      <HStack className="sm:mx-20 mx-4">
+      <HStack>
+        <Heading className="sm:ml-20 ml-4" size={"md"}>
+          Coment
+        </Heading>
+        <PlusSquare
+          // onClick={onOpen}
+          className="mt-10 mb-10 text-gray-700 cursor-pointer"
+          size={30}
+        />
+      </HStack>
+
+      <HStack flexWrap={"wrap"} className="sm:mx-20 mx-4">
         {comments?.map((item: any) => {
           return (
             <Cards

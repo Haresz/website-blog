@@ -32,36 +32,45 @@ export default function Page() {
     getUser();
   }, []);
   const actionRegister = async (values: any) => {
-    const foundUser: any = users.find(
-      (user: any) => user.email === values.email
-    );
-    if (foundUser) {
-      toast({
-        title: `alredy registered`,
-        position: "top",
-        status: "error",
-        isClosable: true,
-      });
-    } else {
-      const response = await registerUser(
-        values.name,
-        values.email,
-        values.gender
+    try {
+      const foundUser: any = users.find(
+        (user: any) => user.email === values.email
       );
-      if (response.status != 201) {
+      if (foundUser) {
         toast({
-          title: `register failed`,
+          title: `alredy registered`,
           position: "top",
           status: "error",
           isClosable: true,
         });
+      } else {
+        const response: any = await registerUser(
+          values.name,
+          values.email,
+          values.gender
+        );
+        if (response.status != 201) {
+          toast({
+            title: `register failed`,
+            position: "top",
+            status: "error",
+            isClosable: true,
+          });
+        }
+        toast({
+          title: `register succesfully`,
+          status: "success",
+          isClosable: true,
+        });
+        router.push("/auth/sign-in");
       }
+    } catch (error) {
       toast({
-        title: `register succesfully`,
-        status: "success",
+        title: `register failed`,
+        position: "top",
+        status: "error",
         isClosable: true,
       });
-      router.push("/auth/sign-in");
     }
   };
 
