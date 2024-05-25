@@ -9,6 +9,7 @@ export function getDataUser() {
     },
   });
 }
+
 export function getDetailUser(id: any) {
   return axios.get(`https://gorest.co.in/public/v2/users/${id}`, {
     headers: {
@@ -16,6 +17,7 @@ export function getDetailUser(id: any) {
     },
   });
 }
+
 export function registerUser(name: string, email: string, gender: string) {
   return axios.post(
     `https://gorest.co.in/public/v2/users`,

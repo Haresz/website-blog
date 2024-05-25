@@ -1,97 +1,44 @@
 "use client";
 import { useEffect, useState } from "react";
-import { getDataUser } from "@/api/user";
-import Cards from "@/components/Cards";
-import InputSearch from "@/components/InputSearch";
-import { actionGetBlog } from "@/lib/features/blogSlice";
-import { useAppSelector, useAppStore } from "@/lib/hooks";
-import { RootState } from "@/lib/store";
+import Cards from "@/components/ui/Cards";
+import InputSearch from "@/components/ui/InputSearch";
 import { Heading, Spinner } from "@chakra-ui/react";
-import Pagination from "@/components/Pagination";
+import Pagination from "@/components/ui/Pagination";
+import { useFetchBlogs } from "@/hooks/useFetchBlogs";
+import { useFetchUsers } from "@/hooks/useFetchUsers";
+import { Blog } from "../types";
 
-interface Blog {
-  id: number;
-  title: string;
-  body: string;
-  user_id: number;
-}
-
-interface User {
-  id: number;
-  name: string;
-  status: string;
+interface SearchParams {
+  query?: string;
+  page?: string;
 }
 
 export default function Home({
   searchParams,
 }: {
-  searchParams?: {
-    query?: string;
-    page?: string;
-  };
+  searchParams?: SearchParams;
 }) {
-  const [users, setUsers] = useState<User[]>([]);
   const [page, setPage] = useState(1);
-  const [loading, setLoading] = useState(false);
-  const [allBlogs, setAllBlogs] = useState<Blog[]>([]);
   const [filteredBlogs, setFilteredBlogs] = useState<Blog[]>([]);
   const [maxPage, setMaxPage] = useState(1);
   const query = searchParams?.query || "";
-  const store = useAppStore();
+  const { blogs: allBlogs, loading: blogsLoading } = useFetchBlogs();
+  const { users, loading: usersLoading } = useFetchUsers();
+  const loading = blogsLoading || usersLoading;
 
-  const fetchBlogs = async (page: number) => {
-    setLoading(true);
-    try {
-      await store.dispatch(actionGetBlog(page));
-      const state = store.getState() as RootState;
-      const newBlogs = state.blogSlice.blogs as Blog[];
-      setAllBlogs((prevBlogs) => [...prevBlogs, ...newBlogs]);
-    } catch (error) {
-      console.error("Error fetching blogs:", error);
-    } finally {
-      setLoading(false);
-    }
-  };
-
-  useEffect(() => {
-    if (!allBlogs[(page - 1) * 4]) {
-      fetchBlogs(page);
-    }
-  }, [page, store, allBlogs]);
-
-  const handleData = () => {
+  const filterBlogs = () => {
     const startIndex = (page - 1) * 4;
     const endIndex = page * 4;
-    const filteredData = allBlogs.filter(filterBlogByQuery);
+    const filteredData = allBlogs.filter((blog) =>
+      blog?.title?.toLowerCase().includes(query.toLowerCase())
+    );
     setFilteredBlogs(filteredData.slice(startIndex, endIndex));
     setMaxPage(Math.ceil(filteredData.length / 4));
   };
 
   useEffect(() => {
-    handleData();
+    filterBlogs();
   }, [query, page, allBlogs]);
-
-  const getUsers = async () => {
-    setLoading(true);
-    try {
-      const response = await getDataUser();
-      setUsers(response.data);
-    } catch (error) {
-      console.error("Error fetching user data:", error);
-    } finally {
-      setLoading(false);
-    }
-  };
-
-  useEffect(() => {
-    getUsers();
-  }, []);
-
-  const filterBlogByQuery = (blog: Blog) => {
-    return (
-      blog?.title && blog.title.toLowerCase().includes(query.toLowerCase())
-    );
-  };
 
   return (
     <div>

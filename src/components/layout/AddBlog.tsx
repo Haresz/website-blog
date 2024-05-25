@@ -15,7 +15,7 @@ import {
 import React from "react";
 import * as Yup from "yup";
 import { useFormik } from "formik";
-import InputText from "./InputText";
+import InputText from "../ui/InputText";
 import { addBlogs } from "@/api/blog";
 
 const blogSchema = Yup.object().shape({
@@ -27,8 +27,8 @@ const blogSchema = Yup.object().shape({
 export default function AddBlog(props: any) {
   const toast = useToast();
   const storedUserData =
-    typeof localStorage !== "undefined"
-      ? localStorage.getItem("userData")
+    typeof sessionStorage !== "undefined"
+      ? sessionStorage.getItem("userData")
       : null;
   const userId = storedUserData ? JSON.parse(storedUserData).id : null;
 

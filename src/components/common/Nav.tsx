@@ -24,7 +24,7 @@ export default function Nav() {
     const tokenFromCookie: any = Cookies.get("token");
     setToken(tokenFromCookie);
 
-    const storedUserData = localStorage.getItem("userData");
+    const storedUserData = sessionStorage.getItem("userData");
     if (storedUserData) {
       setUserData(JSON.parse(storedUserData));
     }
@@ -35,7 +35,7 @@ export default function Nav() {
         setToken(updatedToken);
       }
 
-      const updatedUserData = localStorage.getItem("userData");
+      const updatedUserData = sessionStorage.getItem("userData");
       if (updatedUserData) {
         setUserData(JSON.parse(updatedUserData));
       }
@@ -46,7 +46,7 @@ export default function Nav() {
 
   const handleLogOut = () => {
     Cookies.remove("token");
-    localStorage.removeItem("userData");
+    sessionStorage.removeItem("userData");
     setToken("");
     setUserData({});
     toast({

@@ -15,7 +15,7 @@ import {
 } from "@chakra-ui/react";
 import { useParams } from "next/navigation";
 import { addComentsBlog } from "@/api/blog";
-import InputText from "./InputText";
+import InputText from "../ui/InputText";
 
 const comentSchema = Yup.object().shape({
   body: Yup.string().required("body is required"),
@@ -25,8 +25,8 @@ export default function AddComent(props: any) {
   const toast = useToast();
   const params = useParams();
   const storeUserData =
-    typeof localStorage !== "undefined"
-      ? localStorage.getItem("userData")
+    typeof sessionStorage !== "undefined"
+      ? sessionStorage.getItem("userData")
       : null;
   const name = storeUserData ? JSON.parse(storeUserData).name : null;
   const email = storeUserData ? JSON.parse(storeUserData).email : null;

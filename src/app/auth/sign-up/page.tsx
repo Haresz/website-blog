@@ -1,10 +1,10 @@
 "use client";
-import InputText from "@/components/InputText";
+import InputText from "@/components/ui/InputText";
 import { Box, Button, Heading, useToast } from "@chakra-ui/react";
 import React, { useEffect, useState } from "react";
 import * as Yup from "yup";
 import { useFormik } from "formik";
-import SelectGender from "@/components/SelectGender";
+import SelectGender from "@/components/ui/SelectGender";
 import { getDataUser, registerUser } from "@/api/user";
 import { useRouter } from "next/navigation";
 
@@ -38,7 +38,7 @@ export default function Page() {
       );
       if (foundUser) {
         toast({
-          title: `alredy registered`,
+          title: "Email already registered",
           position: "top",
           status: "error",
           isClosable: true,
@@ -49,24 +49,28 @@ export default function Page() {
           values.email,
           values.gender
         );
-        if (response.status != 201) {
+        if (response.status === 201) {
           toast({
-            title: `register failed`,
+            title: "Registration successful",
+            status: "success",
+            isClosable: true,
+          });
+          router.push("/auth/sign-in");
+        } else {
+          toast({
+            title: "Registration failed",
+            description: response.data.message || "Unknown error occurred",
             position: "top",
             status: "error",
             isClosable: true,
           });
         }
-        toast({
-          title: `register succesfully`,
-          status: "success",
-          isClosable: true,
-        });
-        router.push("/auth/sign-in");
       }
     } catch (error) {
+      console.error("Registration failed:", error);
       toast({
-        title: `register failed`,
+        title: "Registration failed",
+        description: "An unexpected error occurred. Please try again later.",
         position: "top",
         status: "error",
         isClosable: true,
@@ -109,9 +113,7 @@ export default function Page() {
           value={formik.values.name}
         />
         {formik.errors.name && (
-          <div style={{ color: "red" }}>
-            {JSON.stringify(formik.errors.name)}
-          </div>
+          <div style={{ color: "red" }}>{formik.errors.name}</div>
         )}
 
         <InputText
@@ -122,9 +124,7 @@ export default function Page() {
           value={formik.values.email}
         />
         {formik.errors.email && (
-          <div style={{ color: "red" }}>
-            {JSON.stringify(formik.errors.email)}
-          </div>
+          <div style={{ color: "red" }}>{formik.errors.email}</div>
         )}
 
         <SelectGender
@@ -132,9 +132,7 @@ export default function Page() {
           onChange={formik.handleChange}
         />
         {formik.errors.gender && (
-          <div style={{ color: "red" }}>
-            {JSON.stringify(formik.errors.gender)}
-          </div>
+          <div style={{ color: "red" }}>{formik.errors.gender}</div>
         )}
 
         <Button type="submit" width={"100%"} mt={16} colorScheme="blue">

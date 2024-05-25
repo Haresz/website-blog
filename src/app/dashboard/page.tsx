@@ -1,23 +1,22 @@
 "use client";
-import { getDataUser } from "@/api/user";
-import AddBlog from "@/components/AddBlog";
-import Cards from "@/components/Cards";
-import InputSearch from "@/components/InputSearch";
+import React, { useEffect, useState } from "react";
 import {
   HStack,
   Tooltip,
   useDisclosure,
-  useToast,
   Spinner,
   Center,
   Text,
+  useToast,
 } from "@chakra-ui/react";
 import { PlusSquare } from "@phosphor-icons/react/dist/ssr";
-import React, { useEffect, useState } from "react";
-import Cookies from "js-cookie";
-import { redirect } from "next/navigation";
-import Pagination from "@/components/Pagination";
-import { getDataBlogAll } from "@/api/blog";
+import { useUsers } from "@/hooks/useUsers";
+import { useBlogs } from "@/hooks/useBlogs";
+import AddBlog from "@/components/layout/AddBlog";
+import Cards from "@/components/ui/Cards";
+import InputSearch from "@/components/ui/InputSearch";
+import Pagination from "@/components/ui/Pagination";
+import { validateToken } from "@/utils/auth";
 
 export default function Page({
   searchParams,
@@ -27,78 +26,43 @@ export default function Page({
     page?: string;
   };
 }) {
+  const toast = useToast();
   const query = searchParams?.query || "";
-  const [users, setUsers] = useState([]);
-  const [blogs, setBlogs] = useState([]);
-  const { isOpen, onOpen, onClose } = useDisclosure();
   const [page, setPage] = useState(1);
-  const [loading, setLoading] = useState(false);
   const [maxPage, setMaxPage] = useState(1);
   const itemsPerPage = 4;
   const [filteredBlogs, setFilteredBlogs] = useState<any[]>([]);
-  const toast = useToast();
-
-  const fetchUserData = async () => {
-    setLoading(true);
-    try {
-      const response = await getDataUser();
-      setUsers(response.data);
-    } catch (error) {
-      console.error("Error fetching user data:", error);
-    } finally {
-      setLoading(false);
-    }
-  };
-
-  const getAllBlogs = async () => {
-    try {
-      const response: any = await getDataBlogAll();
-      setBlogs(response.data);
-    } catch (error) {
-      console.error("Error fetching blogs data:", error);
-    }
-  };
+  const { isOpen, onOpen, onClose } = useDisclosure();
+  const { users, loading: usersLoading } = useUsers();
+  const { blogs, loading: blogsLoading } = useBlogs();
 
   useEffect(() => {
-    fetchUserData();
-    getAllBlogs();
+    validateToken(toast);
   }, []);
 
   useEffect(() => {
-    const storedUserData: any = localStorage.getItem("userData");
+    const storedUserData = sessionStorage.getItem("userData");
     const userData = storedUserData ? JSON.parse(storedUserData) : null;
-    if (userData) {
-      const filtered = blogs.filter(
-        (blog: any) => blog.user_id === userData.id
-      );
-      setFilteredBlogs(filtered);
-    } else {
-      setFilteredBlogs(blogs);
-    }
+
+    const filtered = userData
+      ? blogs.filter((blog: any) => blog.user_id === userData.id)
+      : blogs;
+
+    setFilteredBlogs(filtered);
   }, [blogs]);
 
   useEffect(() => {
-    const filtered = filteredBlogs.filter(filterBlogByQuery);
+    const filtered = filteredBlogs.filter((blog: any) =>
+      blog.title.toLowerCase().includes(query.toLowerCase())
+    );
     setMaxPage(Math.ceil(filtered.length / itemsPerPage));
   }, [filteredBlogs, query]);
 
-  const filterBlogByQuery = (blog: any) => {
-    return blog.title.toLowerCase().includes(query.toLowerCase());
-  };
-
-  useEffect(() => {
-    const token = Cookies.get("token");
-    if (!token) {
-      toast({
-        title: "Token expired",
-        status: "error",
-        duration: 2000,
-        isClosable: true,
-      });
-      localStorage.removeItem("userData");
-      redirect("/");
-    }
-  }, []);
+  const filteredAndPaginatedBlogs = filteredBlogs
+    .filter((blog: any) =>
+      blog.title.toLowerCase().includes(query.toLowerCase())
+    )
+    .slice((page - 1) * itemsPerPage, page * itemsPerPage);
 
   return (
     <div>
@@ -113,29 +77,26 @@ export default function Page({
         </Tooltip>
       </HStack>
       <div className="mx-20 flex flex-wrap justify-between">
-        {loading ? (
+        {usersLoading || blogsLoading ? (
           <Center w="100%" h="100vh">
             <Spinner />
           </Center>
-        ) : filteredBlogs.filter(filterBlogByQuery).length === 0 ? (
+        ) : filteredAndPaginatedBlogs.length === 0 ? (
           <Center w="100%" h="50vh">
             <Text>No blogs found.</Text>
           </Center>
         ) : (
-          filteredBlogs
-            .filter(filterBlogByQuery)
-            .slice((page - 1) * itemsPerPage, page * itemsPerPage)
-            .map((item: any) => (
-              <Cards
-                key={item.id}
-                id={item.id}
-                title={item.title}
-                content={item.body}
-                user={item.user_name || "username"}
-                status={item.status || "active"}
-                type="dashboard"
-              />
-            ))
+          filteredAndPaginatedBlogs.map((item: any) => (
+            <Cards
+              key={item.id}
+              id={item.id}
+              title={item.title}
+              content={item.body}
+              user={item.user_name || "username"}
+              status={item.status || "active"}
+              type="dashboard"
+            />
+          ))
         )}
       </div>
       <Pagination page={page} setPage={setPage} maxPage={maxPage} />

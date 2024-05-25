@@ -15,9 +15,9 @@ import {
 } from "@chakra-ui/react";
 import Link from "next/link";
 import React, { useState } from "react";
-import AddBlog from "./AddBlog";
+import AddBlog from "../layout/AddBlog";
 import { deleteBlogs, getDetailBlog } from "@/api/blog";
-import EditBlog from "./EditBlog";
+import EditBlog from "../layout/EditBlog";
 
 export default function Cards(props: any) {
   const { isOpen, onOpen, onClose } = useDisclosure();
