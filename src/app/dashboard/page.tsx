@@ -27,7 +27,7 @@ export default function Page({
   const query = searchParams?.query || "";
   const [page, setPage] = useState(1);
   const [maxPage, setMaxPage] = useState(1);
-  const itemsPerPage = 4;
+  const itemsPerPage = 6;
   const [filteredBlogs, setFilteredBlogs] = useState<any[]>([]);
   const { isOpen, onOpen, onClose } = useDisclosure();
   const { users, loading: usersLoading } = useUsers();

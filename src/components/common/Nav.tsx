@@ -57,7 +57,7 @@ export default function Nav() {
   };
 
   return (
-    <Box className="w-full py-8 sm:px-20 px-4 flex justify-between bg-white border-b-2 font-bold text-black">
+    <Box className="w-full py-8 sm:px-20 px-4 flex justify-between bg-dark font-bold text-light">
       <Link href={"/"}>
         <Text fontSize={"3xl"}>
           {!userData.name ? "Your Name" : userData.name}
@@ -66,12 +66,26 @@ export default function Nav() {
       <HStack gap={4}>
         {!token ? (
           <>
-            <Link href={"/auth/sign-up"}>
-              <Button colorScheme="blue">Sign up</Button>
-            </Link>
             <Link href={"/auth/sign-in"}>
-              <Button colorScheme="blue" variant="outline">
-                Sign In
+              <Button
+                colorScheme="white"
+                variant="outline"
+                borderColor={"#2a4059"}
+                borderRadius={0}
+                size="md"
+              >
+                Login
+              </Button>
+            </Link>
+            <Link href={"/auth/sign-up"}>
+              <Button
+                backgroundColor={"#2B6DED"}
+                color={"white"}
+                borderRadius={0}
+                _hover={{ backgroundColor: "#2B6DED" }}
+                size="md"
+              >
+                Sign up
               </Button>
             </Link>
           </>

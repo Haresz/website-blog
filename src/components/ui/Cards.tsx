@@ -12,12 +12,16 @@ import {
   useDisclosure,
   Badge,
   useToast,
+  VStack,
+  HStack,
 } from "@chakra-ui/react";
 import Link from "next/link";
 import React, { useState } from "react";
 import AddBlog from "../layout/AddBlog";
 import { deleteBlogs, getDetailBlog } from "@/api/blog";
 import EditBlog from "../layout/EditBlog";
+import Image from "next/image";
+import { PencilSimpleLine, TrashSimple } from "@phosphor-icons/react/dist/ssr";
 
 export default function Cards(props: any) {
   const { isOpen, onOpen, onClose } = useDisclosure();
@@ -51,20 +55,21 @@ export default function Cards(props: any) {
   };
 
   return (
-    <Card my={8} maxW={props.comment === true ? "md" : "xl"}>
+    <Card my={8} maxW={400}>
       <CardHeader>
         <Flex className="gap-4">
           <Flex flex="1" gap="4" alignItems="center" flexWrap="wrap">
             <Avatar src="https://bit.ly/broken-link" />
-
             <Box>
-              <Heading size="sm">{props.user}</Heading>
+              <Heading size="md">{props.user}</Heading>
               {props.comment === true ? (
                 <Text fontSize="sm">{props.email}</Text>
               ) : (
                 <Text>
                   {props.status === "active" ? (
-                    <Badge colorScheme="green">Active</Badge>
+                    <Badge py={1} px={2} borderRadius={10} colorScheme="green">
+                      Active
+                    </Badge>
                   ) : (
                     <Badge colorScheme="yellow">Inactive</Badge>
                   )}
@@ -72,17 +77,34 @@ export default function Cards(props: any) {
               )}
             </Box>
           </Flex>
+          {props.type === "dashboard" ? (
+            <HStack>
+              <Box
+                onClick={() => actionGetDetail(props.id)}
+                className="p-3 text-primaryBtn border rounded-full border-gray-300 cursor-pointer"
+              >
+                <PencilSimpleLine size={30} />
+              </Box>
+              <Box
+                onClick={() => actionDelete(props.id)}
+                className="p-3 text-red-600 border rounded-full border-gray-300 cursor-pointer"
+              >
+                <TrashSimple size={30} />
+              </Box>
+            </HStack>
+          ) : null}
         </Flex>
       </CardHeader>
       <CardBody py={1}>
-        <Heading className="truncate" as={"h2"} size={"md"}>
-          {props.title}
+        <Box className=" bg-darkGray" width={"full"} height={160} />
+        <Heading className="truncate mt-6" as={"h2"} size={"lg"}>
+          <Link href={`/detail/${props.id}`}>{props.title}</Link>
         </Heading>
-        <Text className="text-ellipsis overflow-hidden line-clamp-2 ">
+        <Text className="text-ellipsis text-lightGray overflow-hidden line-clamp-4 my-8">
           {props.content}
         </Text>
       </CardBody>
-      <CardFooter py={2} gap={2}>
+      {/* <CardFooter py={2} gap={2}>
         {props.type === "comment" ? null : props.type === "dashboard" ? (
           <Box>
             <Link href={`/detail/${props.id}`}>
@@ -113,7 +135,7 @@ export default function Cards(props: any) {
             </Button>
           </Link>
         )}
-      </CardFooter>
+      </CardFooter> */}
       <AddBlog isOpen={isOpen} onClose={onClose} />
       <EditBlog
         blog={detail}
