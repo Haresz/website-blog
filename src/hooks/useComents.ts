@@ -6,20 +6,20 @@ export const useComments = (blogId: string) => {
   const [comments, setComments] = useState<Comment[]>([]);
   const [loading, setLoading] = useState(true);
 
+  const fetchComments = async () => {
+    try {
+      const response = await getComentsBlogs(blogId);
+      setComments(response.data);
+    } catch (error) {
+      console.error("Error fetching comments:", error);
+    } finally {
+      setLoading(false);
+    }
+  };
+
   useEffect(() => {
-    const fetchComments = async () => {
-      try {
-        const response = await getComentsBlogs(blogId);
-        setComments(response.data);
-      } catch (error) {
-        console.error("Error fetching comments:", error);
-      } finally {
-        setLoading(false);
-      }
-    };
-
     fetchComments();
-  }, [blogId]);
+  }, []);
 
-  return { comments, loading };
+  return { comments, loading, refetchComments: fetchComments };
 };

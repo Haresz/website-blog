@@ -47,7 +47,7 @@ export default function AddComent(props: any) {
           isClosable: true,
         });
         props.onClose();
-        window.location.reload();
+        props.refetchComments();
       } else {
         toast({
           title: "Coment added failed",

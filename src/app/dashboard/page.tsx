@@ -1,5 +1,5 @@
 "use client";
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, useCallback } from "react";
 import {
   HStack,
   Tooltip,
@@ -21,10 +21,7 @@ import { validateToken } from "@/utils/auth";
 export default function Page({
   searchParams,
 }: {
-  searchParams?: {
-    query?: string;
-    page?: string;
-  };
+  searchParams?: { query?: string; page?: string };
 }) {
   const toast = useToast();
   const query = searchParams?.query || "";
@@ -34,7 +31,7 @@ export default function Page({
   const [filteredBlogs, setFilteredBlogs] = useState<any[]>([]);
   const { isOpen, onOpen, onClose } = useDisclosure();
   const { users, loading: usersLoading } = useUsers();
-  const { blogs, loading: blogsLoading } = useBlogs();
+  const { blogs, loading: blogsLoading, refetchBlogs }: any = useBlogs();
 
   useEffect(() => {
     validateToken(toast);
@@ -95,12 +92,13 @@ export default function Page({
               user={item.user_name || "username"}
               status={item.status || "active"}
               type="dashboard"
+              refetchBlogs={refetchBlogs}
             />
           ))
         )}
       </div>
       <Pagination page={page} setPage={setPage} maxPage={maxPage} />
-      <AddBlog isOpen={isOpen} onClose={onClose} />
+      <AddBlog isOpen={isOpen} onClose={onClose} refetchBlogs={refetchBlogs} />
     </div>
   );
 }

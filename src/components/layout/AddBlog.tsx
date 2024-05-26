@@ -32,14 +32,13 @@ export default function AddBlog(props: any) {
       : null;
   const userId = storedUserData ? JSON.parse(storedUserData).id : null;
 
-  const actionAddBlog = async (values: any) => {
+  const actionAddBlog = async (values: any, resetForm: any) => {
     try {
       const response = await addBlogs(
         values.user_id,
         values.title,
         values.body
       );
-      console.log(response);
       if (response.status === 201) {
         toast({
           title: `Blog added successfully`,
@@ -47,8 +46,9 @@ export default function AddBlog(props: any) {
           position: "top",
           isClosable: true,
         });
+        resetForm();
         props.onClose();
-        window.location.reload();
+        props.refetchBlogs();
       } else {
         throw new Error("Failed to add blog");
       }
@@ -69,9 +69,8 @@ export default function AddBlog(props: any) {
       body: "",
     },
     validationSchema: blogSchema,
-    onSubmit: (values) => {
-      console.log(values);
-      actionAddBlog(values);
+    onSubmit: (values, { resetForm }) => {
+      actionAddBlog(values, resetForm);
     },
   });
 

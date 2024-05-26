@@ -58,7 +58,8 @@ export default function EditBlog(props: any) {
       position: "top",
       isClosable: true,
     });
-    window.location.reload();
+    props.onClose();
+    props.refetchBlogs();
   };
 
   const formik = useFormik({
@@ -69,7 +70,6 @@ export default function EditBlog(props: any) {
     validationSchema: blogSchema,
     onSubmit: (values: any) => {
       actionEditBlog(values);
-      props.onClose();
     },
   });
 

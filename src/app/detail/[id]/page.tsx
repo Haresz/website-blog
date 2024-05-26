@@ -19,9 +19,11 @@ import { PlusSquare } from "@phosphor-icons/react/dist/ssr";
 export default function Page() {
   const params = useParams();
   const { blog, loading: blogLoading } = useBlogDetail(params.id as string);
-  const { comments, loading: commentsLoading } = useComments(
-    params.id as string
-  );
+  const {
+    comments,
+    loading: commentsLoading,
+    refetchComments,
+  } = useComments(params.id as string);
   const [user, setUser] = React.useState<string>("");
   const { isOpen, onOpen, onClose } = useDisclosure();
 
@@ -83,7 +85,11 @@ export default function Page() {
           />
         ))}
       </HStack>
-      <AddComent isOpen={isOpen} onClose={onClose} />
+      <AddComent
+        isOpen={isOpen}
+        onClose={onClose}
+        refetchComments={refetchComments}
+      />
     </>
   );
 }
