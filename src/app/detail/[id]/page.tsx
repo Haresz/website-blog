@@ -7,14 +7,23 @@ import {
   Text,
   Spinner,
   useDisclosure,
+  Tag,
+  Badge,
+  VStack,
+  Avatar,
+  Box,
+  Card,
+  CardBody,
+  CardHeader,
+  Flex,
 } from "@chakra-ui/react";
 import { useParams } from "next/navigation";
 import { useBlogDetail } from "@/hooks/useBlogDetail";
 import { useComments } from "@/hooks/useComents";
-import Cards from "@/components/ui/Cards";
 import AddComent from "@/components/layout/AddComent";
 import { getDetailUser } from "@/api/user";
-import { PlusSquare } from "@phosphor-icons/react/dist/ssr";
+import Nav from "@/components/common/Nav";
+import Footer from "@/components/common/Footer";
 
 export default function Page() {
   const params = useParams();
@@ -25,13 +34,12 @@ export default function Page() {
     refetchComments,
   } = useComments(params.id as string);
   const [user, setUser] = React.useState<string>("");
-  const { isOpen, onOpen, onClose } = useDisclosure();
-
   React.useEffect(() => {
     const fetchUser = async () => {
       if (blog?.user_id) {
         try {
           const response = await getDetailUser(blog.user_id);
+          console.log(response);
           setUser(response.data.name);
         } catch (error) {
           setUser("username");
@@ -48,48 +56,66 @@ export default function Page() {
 
   return (
     <>
+      <Nav theme="light" />
+      <Heading
+        as="h1"
+        size="4xl"
+        className="sm:mx-20 mx-4 mt-20 mb-4 text-start"
+      >
+        {blog?.title}
+      </Heading>
+      <HStack justifyContent={"left"} className="sm:mx-20 mx-4 mt-12">
+        <Badge
+          className="border-2 text-dark"
+          backgroundColor={"#F9FAFA"}
+          borderRadius={50}
+          px={8}
+          py={3}
+        >
+          <Text fontWeight="medium" fontSize="sm">
+            {user}
+          </Text>
+        </Badge>
+      </HStack>
       <Image
-        className="w-full h-96"
+        className="w-full sm:px-20 px-4 my-20"
+        height={400}
         objectFit="cover"
         src="https://images.unsplash.com/photo-1531403009284-440f080d1e12?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1770&q=80"
         alt="Blog Cover"
       />
-      <Heading className="sm:mx-20 mx-4 mt-20 mb-4 text-start">
-        {blog?.title}
-      </Heading>
-      <HStack justifyContent={"left"} className="sm:mx-20 mx-4">
-        <Text fontSize={"md"}>Author :</Text>
-        <Heading size={"sm"}>{user}</Heading>
-      </HStack>
-      <Text className="sm:m-20 m-4 mt-10 font-normal text-justify text-lg">
+      <Text className="sm:m-20 m-4 mt-10 font-normal text-justify text-lg text-lightGray">
         {blog?.body}
       </Text>
-      <HStack>
-        <Heading className="sm:ml-20 ml-4" size={"md"}>
-          Comments
-        </Heading>
-        <PlusSquare
-          onClick={onOpen}
-          className="mt-10 mb-10 text-gray-700 cursor-pointer"
-          size={30}
-        />
-      </HStack>
-      <HStack flexWrap={"wrap"} className="sm:mx-20 mx-4">
-        {comments.map((item) => (
-          <Cards
-            key={item.id}
-            user={item.name}
-            content={item.body}
-            type="comment"
-            email={item.email}
-          />
-        ))}
-      </HStack>
-      <AddComent
-        isOpen={isOpen}
-        onClose={onClose}
-        refetchComments={refetchComments}
-      />
+      <VStack
+        className="sm:mx-20 mx-4 my-10 p-8"
+        borderWidth="1px"
+        borderRadius="xs"
+        alignItems={"start"}
+      >
+        <Heading size={"xl"}>Comments</Heading>
+        <VStack className="w-full">
+          <Box maxH={400} minH={"fit-content"} className="w-full overflow-auto">
+            {comments.map((item: any) => (
+              <Box className="w-full" key={item.id} my={6}>
+                <Flex className="gap-4">
+                  <Flex flex="1" gap="4" alignItems="start" flexWrap="wrap">
+                    <Avatar src="https://bit.ly/broken-link" />
+                    <Box>
+                      <Heading size="sm">{item.name}</Heading>
+                      <Text className="text-ellipsis overflow-hidden line-clamp-2 mt-2 text-lightGray">
+                        {item.body}
+                      </Text>
+                    </Box>
+                  </Flex>
+                </Flex>
+              </Box>
+            ))}
+          </Box>
+          <AddComent refetchComments={refetchComments} />
+        </VStack>
+      </VStack>
+      <Footer />
     </>
   );
 }

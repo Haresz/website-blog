@@ -1,7 +1,6 @@
 import type { Metadata } from "next";
 import { Providers } from "./providers";
 import "../app/globals.css";
-import Nav from "@/components/common/Nav";
 import StoreProvider from "./StoreProvider";
 
 export const metadata: Metadata = {
@@ -18,10 +17,7 @@ export default function RootLayout({
     <html lang="en">
       <body>
         <StoreProvider>
-          <Providers>
-            <Nav />
-            {children}
-          </Providers>
+          <Providers>{children}</Providers>
         </StoreProvider>
       </body>
     </html>

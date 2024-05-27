@@ -1,18 +1,7 @@
 import React from "react";
 import { useFormik } from "formik";
 import * as Yup from "yup";
-import {
-  Button,
-  FormControl,
-  Modal,
-  ModalBody,
-  ModalCloseButton,
-  ModalContent,
-  ModalFooter,
-  ModalHeader,
-  ModalOverlay,
-  useToast,
-} from "@chakra-ui/react";
+import { Box, Button, FormControl, useToast } from "@chakra-ui/react";
 import { useParams } from "next/navigation";
 import { addComentsBlog } from "@/api/blog";
 import InputText from "../ui/InputText";
@@ -31,7 +20,7 @@ export default function AddComent(props: any) {
   const name = storeUserData ? JSON.parse(storeUserData).name : null;
   const email = storeUserData ? JSON.parse(storeUserData).email : null;
 
-  const actionAddComent = async (values: any) => {
+  const actionAddComent = async (values: any, resetForm: any) => {
     try {
       const response = await addComentsBlog(
         parseInt(params.id as string),
@@ -46,8 +35,8 @@ export default function AddComent(props: any) {
           position: "top",
           isClosable: true,
         });
-        props.onClose();
         props.refetchComments();
+        resetForm();
       } else {
         toast({
           title: "Coment added failed",
@@ -71,41 +60,31 @@ export default function AddComent(props: any) {
       body: "",
     },
     validationSchema: comentSchema,
-    onSubmit: (values) => {
-      actionAddComent(values);
-      console.log(values);
+    onSubmit: (values, { resetForm }) => {
+      actionAddComent(values, resetForm);
     },
   });
   return (
-    <Modal isCentered isOpen={props.isOpen} onClose={props.onClose}>
-      <ModalOverlay />
-      <ModalContent>
-        <ModalHeader>Create your blog</ModalHeader>
-        <ModalCloseButton />
-        <form onSubmit={formik.handleSubmit}>
-          <ModalBody pb={6}>
-            <FormControl>
-              <InputText
-                value={formik.values.body}
-                onChange={formik.handleChange}
-                label="body"
-                placeholder="Insert your body"
-                name="body"
-              />
-              {formik.touched.body && formik.errors.body && (
-                <div style={{ color: "red" }}>{formik.errors.body}</div>
-              )}
-            </FormControl>
-          </ModalBody>
-
-          <ModalFooter>
-            <Button type="submit" colorScheme="blue" mr={3}>
-              Save
-            </Button>
-            <Button onClick={props.onClose}>Cancel</Button>
-          </ModalFooter>
-        </form>
-      </ModalContent>
-    </Modal>
+    <Box className="w-full">
+      <form
+        className="w-full flex flex-row items-center"
+        onSubmit={formik.handleSubmit}
+      >
+        <FormControl>
+          <InputText
+            value={formik.values.body}
+            onChange={formik.handleChange}
+            placeholder="Insert your body"
+            name="body"
+          />
+          {formik.touched.body && formik.errors.body && (
+            <div style={{ color: "red" }}>{formik.errors.body}</div>
+          )}
+        </FormControl>
+        <Button type="submit" colorScheme="blue" mr={3} mt={8} borderRadius={0}>
+          Save
+        </Button>
+      </form>
+    </Box>
   );
 }

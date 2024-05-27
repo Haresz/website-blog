@@ -9,13 +9,14 @@ import {
   MenuItem,
   MenuList,
   useToast,
+  theme,
 } from "@chakra-ui/react";
 import { SignOut, Toolbox, UserCircle } from "@phosphor-icons/react/dist/ssr";
 import Link from "next/link";
 import React, { useEffect, useState } from "react";
 import Cookies from "js-cookie";
 
-export default function Nav() {
+export default function Nav(props: { theme: string }) {
   const [token, setToken] = useState("");
   const [userData, setUserData] = useState<any>({});
   const toast = useToast();
@@ -57,7 +58,13 @@ export default function Nav() {
   };
 
   return (
-    <Box className="w-full py-8 sm:px-20 px-4 flex justify-between bg-dark font-bold text-light">
+    <Box
+      className={
+        props.theme == "dark"
+          ? "w-full py-8 sm:px-20 px-4 flex justify-between bg-dark font-bold text-light container-nav"
+          : "w-full py-8 sm:px-20 px-4 flex justify-between bg-white font-bold text-dark shadow-lg container-nav"
+      }
+    >
       <Link href={"/"}>
         <Text fontSize={"3xl"}>
           {!userData.name ? "Your Name" : userData.name}
@@ -91,17 +98,19 @@ export default function Nav() {
           </>
         ) : (
           <>
-            <Link href={"/dashboard"}>
-              <Toolbox size={38} />
-            </Link>
             <Menu>
               <MenuButton>
                 <UserCircle size={38} />
               </MenuButton>
               <MenuList>
                 <MenuItem onClick={() => handleLogOut()}>
-                  <SignOut size={32} />
-                  <Text ml={3} fontSize="lg" fontWeight={"semibold"}>
+                  <SignOut color="black" size={32} />
+                  <Text
+                    color={"black"}
+                    ml={3}
+                    fontSize="lg"
+                    fontWeight={"semibold"}
+                  >
                     Log Out
                   </Text>
                 </MenuItem>
