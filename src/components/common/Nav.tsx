@@ -9,7 +9,6 @@ import {
   MenuItem,
   MenuList,
   useToast,
-  theme,
 } from "@chakra-ui/react";
 import { SignOut, Toolbox, UserCircle } from "@phosphor-icons/react/dist/ssr";
 import Link from "next/link";

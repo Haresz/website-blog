@@ -6,15 +6,10 @@ import {
   Image,
   Text,
   Spinner,
-  useDisclosure,
-  Tag,
   Badge,
   VStack,
   Avatar,
   Box,
-  Card,
-  CardBody,
-  CardHeader,
   Flex,
 } from "@chakra-ui/react";
 import { useParams } from "next/navigation";

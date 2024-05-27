@@ -2,7 +2,6 @@
 import { useEffect, useState } from "react";
 import {
   Box,
-  Button,
   Center,
   Image,
   Link,
@@ -14,13 +13,10 @@ import {
   TabPanels,
   Tabs,
   Text,
-  VStack,
   useDisclosure,
   useToast,
 } from "@chakra-ui/react";
-import Cards from "@/components/ui/Cards";
 import InputSearch from "@/components/ui/InputSearch";
-import Pagination from "@/components/ui/Pagination";
 import AddBlog from "@/components/layout/AddBlog";
 import { useFetchBlogs } from "@/hooks/useFetchBlogs";
 import { useFetchUsers } from "@/hooks/useFetchUsers";
@@ -29,7 +25,6 @@ import { useBlogs } from "@/hooks/useBlogs";
 import { validateToken } from "@/utils/auth";
 import { Blog } from "../types";
 import Nav from "@/components/common/Nav";
-import { Plus } from "@phosphor-icons/react/dist/ssr";
 import BlogList from "@/components/ui/BlogList";
 import Footer from "@/components/common/Footer";
 
