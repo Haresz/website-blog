@@ -1,6 +1,4 @@
 import Cookies from "js-cookie";
-import { redirect } from "next/navigation";
-import { useToast } from "@chakra-ui/react";
 import { v4 as uuidv4 } from "uuid";
 
 export const setToken = () => {
@@ -19,6 +17,7 @@ export const validateToken = (toast: any) => {
       isClosable: true,
     });
     sessionStorage.removeItem("userData");
-    redirect("/");
+    return false;
   }
+  return true;
 };

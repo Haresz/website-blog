@@ -27,28 +27,13 @@ import { useFetchBlogs } from "@/hooks/useFetchBlogs";
 import { useFetchUsers } from "@/hooks/useFetchUsers";
 import { useUsers } from "@/hooks/useUsers";
 import { useBlogs } from "@/hooks/useBlogs";
+import { validateToken } from "@/utils/auth";
 import { Blog } from "../types";
 
 interface SearchParams {
   query?: string;
   page?: string;
 }
-
-export const validateToken = (toast: any) => {
-  const token = Cookies.get("token");
-
-  if (!token) {
-    toast({
-      title: "Token expired",
-      status: "error",
-      duration: 2000,
-      isClosable: true,
-    });
-    sessionStorage.removeItem("userData");
-    return false;
-  }
-  return true;
-};
 
 export default function Home({
   searchParams,
@@ -125,10 +110,9 @@ export default function Home({
       const isValid = validateToken(toast);
       setIsTokenValid(isValid);
       if (!isValid) {
-        return false;
+        return;
       }
     }
-    return true;
   };
 
   return (
