@@ -19,8 +19,8 @@ import InputText from "../ui/InputText";
 import { updateBlogs } from "@/api/blog";
 
 const blogSchema = Yup.object().shape({
-  title: Yup.string().required("input required"),
-  body: Yup.string().required("input required"),
+  title: Yup.string().required("input required").max(200, "max 200 characters"),
+  body: Yup.string().required("input required").max(500, "max 500 characters"),
 });
 
 export default function EditBlog(props: any) {

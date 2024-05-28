@@ -4,6 +4,7 @@ import React from "react";
 export default function Footer() {
   return (
     <HStack
+      flexWrap={"wrap"}
       justifyContent={"space-between"}
       className="text-lightGray sm:mx-20 mx-4 mt-40 mb-8"
     >

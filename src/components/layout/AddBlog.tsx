@@ -20,8 +20,12 @@ import { addBlogs } from "@/api/blog";
 
 const blogSchema = Yup.object().shape({
   user_id: Yup.number().required("User ID is required"),
-  title: Yup.string().required("Title is required"),
-  body: Yup.string().required("Body is required"),
+  title: Yup.string()
+    .required("Title is required")
+    .max(200, "max 200 characters"),
+  body: Yup.string()
+    .required("Body is required")
+    .max(500, "max 500 characters"),
 });
 
 export default function AddBlog(props: any) {
