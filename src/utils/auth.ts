@@ -1,5 +1,4 @@
 import Cookies from "js-cookie";
-import { useToast } from "@chakra-ui/react";
 import { v4 as uuidv4 } from "uuid";
 
 export const setToken = () => {
