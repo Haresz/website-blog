@@ -51,6 +51,7 @@ export default function Nav(props: { theme: string }) {
     setUserData({});
     toast({
       title: `You've logged out`,
+      position: "top",
       status: "info",
       isClosable: true,
     });

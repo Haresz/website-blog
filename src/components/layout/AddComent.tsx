@@ -7,7 +7,9 @@ import { addComentsBlog } from "@/api/blog";
 import InputText from "../ui/InputText";
 
 const comentSchema = Yup.object().shape({
-  body: Yup.string().required("body is required"),
+  body: Yup.string()
+    .required("body is required")
+    .max(500, "max length 500 characters"),
 });
 
 export default function AddComent(props: any) {

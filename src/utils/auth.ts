@@ -14,6 +14,7 @@ export const validateToken = (toast: any, showToast = true) => {
     if (showToast) {
       toast({
         title: "Token expired",
+        position: "top",
         status: "error",
         duration: 2000,
         isClosable: true,
