@@ -1,14 +1,13 @@
 "use client";
-import React, { useEffect, useState } from "react";
-import { Box, Button, Heading, useToast } from "@chakra-ui/react";
+import React from "react";
+import { Box, Button, Heading, useToast, Text } from "@chakra-ui/react";
 import { useFormik } from "formik";
 import * as Yup from "yup";
 import { useRouter } from "next/navigation";
-import Cookies from "js-cookie";
-import { v4 as uuidv4 } from "uuid";
 import { useUsers } from "@/hooks/useUsers";
 import InputText from "@/components/ui/InputText";
 import { setToken } from "@/utils/auth";
+import Link from "next/link";
 
 const loginSchema = Yup.object().shape({
   name: Yup.string().required("Input required"),
@@ -94,12 +93,30 @@ export default function LoginPage() {
           type="submit"
           width="100%"
           mt={8}
+          mb={4}
           colorScheme="blue"
           isLoading={loading}
         >
           Submit
         </Button>
       </form>
+      <Text textAlign={"center"} fontSize={"sm"}>
+        Does anyone not have an account?
+        <Link
+          className=" font-bold underline text-blue-700"
+          href={"/auth/sign-up"}
+        >
+          register
+        </Link>
+      </Text>
+      <Text my={2} textAlign={"center"} fontSize={"sm"}>
+        or
+      </Text>
+      <Text textAlign={"center"} fontSize={"sm"}>
+        <Link className=" font-bold underline text-blue-700" href={"/"}>
+          I want to log in without an account
+        </Link>
+      </Text>
     </Box>
   );
 }

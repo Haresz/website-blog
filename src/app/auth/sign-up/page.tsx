@@ -1,12 +1,13 @@
 "use client";
 import InputText from "@/components/ui/InputText";
-import { Box, Button, Heading, useToast } from "@chakra-ui/react";
+import { Box, Button, Heading, useToast, Text } from "@chakra-ui/react";
 import React, { useEffect, useState } from "react";
 import * as Yup from "yup";
 import { useFormik } from "formik";
 import SelectGender from "@/components/ui/SelectGender";
 import { getDataUser, registerUser } from "@/api/user";
 import { useRouter } from "next/navigation";
+import Link from "next/link";
 
 const userSchema = Yup.object().shape({
   name: Yup.string().required("input required"),
@@ -114,7 +115,7 @@ export default function Page() {
           value={formik.values.name}
         />
         {formik.errors.name && (
-          <div style={{ color: "red" }}>{formik.errors.name}</div>
+          <Box style={{ color: "red" }}>{formik.errors.name}</Box>
         )}
         <InputText
           onChange={formik.handleChange}
@@ -124,19 +125,28 @@ export default function Page() {
           value={formik.values.email}
         />
         {formik.errors.email && (
-          <div style={{ color: "red" }}>{formik.errors.email}</div>
+          <Box style={{ color: "red" }}>{formik.errors.email}</Box>
         )}
         <SelectGender
           value={formik.values.gender}
           onChange={formik.handleChange}
         />
         {formik.errors.gender && (
-          <div style={{ color: "red" }}>{formik.errors.gender}</div>
+          <Box style={{ color: "red" }}>{formik.errors.gender}</Box>
         )}
-        <Button type="submit" width="100%" mt={8} colorScheme="blue">
+        <Button type="submit" width="100%" mt={8} mb={4} colorScheme="blue">
           Submit
         </Button>
       </form>
+      <Text fontSize={"sm"}>
+        Any have a account{" "}
+        <Link
+          className=" font-bold underline text-blue-700"
+          href={"/auth/sign-in"}
+        >
+          Login
+        </Link>
+      </Text>
     </Box>
   );
 }
