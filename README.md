@@ -1,8 +1,10 @@
+---
+
 # Website Blog
 
 ## Description
 
-Website Blog is a web application developed using Next.js framework, Chakra UI for styling, and Redux Toolkit for state management. It allows users to create, edit, and view blog posts. The application provides a user-friendly interface with features like pagination and responsive design.
+Website Blog is a web application developed using the Next.js framework, Chakra UI for styling, and Redux Toolkit for state management. It allows users to create, edit, and view blog posts. The application provides a user-friendly interface with features like pagination and responsive design.
 
 ## Features
 
@@ -27,16 +29,101 @@ Website Blog is a web application developed using Next.js framework, Chakra UI f
 
 ## Getting Started
 
-1. Clone the repository:
+### Running the Application
 
-   ``git clone <repository-url>``
+1. **Clone the repository:**
 
-2.Install dependencies:
+   ```bash
+   git clone <repository-url>
+   ```
 
-   ```npm install```
+2. **Navigate to the project directory:**
 
-3.Run the development server:
+   ```bash
+   cd website-blog
+   ```
 
-   ```npm run dev```
+3. **Install dependencies:**
 
-4. Open http://localhost:3000 in your browser.
+   ```bash
+   npm install
+   ```
+
+4. **Run the development server:**
+
+   ```bash
+   npm run dev
+   ```
+
+5. **Open your browser and go to:**
+
+   ```plaintext
+   http://localhost:3000
+   ```
+
+By following these steps, you should be able to set up and run the application locally on your machine.
+
+## Folder Structure
+
+The project follows a structured folder layout to keep the code organized:
+
+```
+src
+├───api
+├───app
+│   ├───auth
+│   │   ├───sign-in
+│   │   └───sign-up
+│   └───detail
+│       └───[id]
+├───components
+│   ├───common
+│   ├───layout
+│   └───ui
+├───hooks
+├───lib
+│   └───features
+├───types
+└───utils
+```
+
+The `src` directory contains all the main code for the application, divided into logical subdirectories:
+- `api` for API-related code.
+- `app` for the main application pages and routes.
+- `components` for reusable UI components.
+- `hooks` for custom React hooks.
+- `lib` for library-specific code, such as Redux features.
+- `types` for TypeScript type definitions.
+- `utils` for utility functions and helpers.
+
+## Additional Scripts
+
+The project includes several npm scripts for common tasks:
+
+- **Start the development server:**
+
+  ```bash
+  npm run dev
+  ```
+
+- **Build the application for production:**
+
+  ```bash
+  npm run build
+  ```
+
+- **Start the production server:**
+
+  ```bash
+  npm run start
+  ```
+
+- **Lint the code:**
+
+  ```bash
+  npm run lint
+  ```
+
+By following this README, you should have all the information needed to set up, run, and understand the structure of the Website Blog project.
+
+---
