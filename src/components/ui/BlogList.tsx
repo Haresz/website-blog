@@ -39,7 +39,7 @@ const BlogList: React.FC<BlogListProps> = ({
               colorScheme="blue"
               rightIcon={<Plus size={24} />}
               borderRadius={0}
-              size="md"
+              size={{ base: "xs", sm: "md" }}
             >
               Add Blog
             </Button>

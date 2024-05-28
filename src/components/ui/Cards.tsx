@@ -69,14 +69,14 @@ const Cards: React.FC<CardsProps> = ({
         status: "success",
         isClosable: true,
       });
-      refetchBlogs();
+      refetchBlogs(); // Ensure blogs are refetched after deletion
     }
   };
 
   return (
     <Card my={8} maxW={400}>
       <CardHeader>
-        <Flex gap="4">
+        <Flex gap="4" flexWrap={"wrap"}>
           <Flex flex="1" gap="4" alignItems="center" flexWrap="wrap">
             <Avatar src="https://bit.ly/broken-link" />
             <Box>

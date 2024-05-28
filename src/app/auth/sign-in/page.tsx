@@ -59,14 +59,14 @@ export default function LoginPage() {
   return (
     <Box
       mx="auto"
-      my={40}
-      p={10}
-      maxW="md"
+      my={[10, 20, 40]}
+      p={[5, 10]}
+      maxW={["90%", "80%", "md"]}
       borderWidth="2px"
       borderRadius="lg"
       overflow="hidden"
     >
-      <Heading as="h2" size="xl">
+      <Heading as="h2" size="xl" textAlign="center" mb={6}>
         Login
       </Heading>
       <form onSubmit={formik.handleSubmit}>
@@ -93,7 +93,7 @@ export default function LoginPage() {
         <Button
           type="submit"
           width="100%"
-          mt={16}
+          mt={8}
           colorScheme="blue"
           isLoading={loading}
         >

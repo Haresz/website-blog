@@ -52,6 +52,7 @@ export default function Page() {
         if (response.status === 201) {
           toast({
             title: "Registration successful",
+            position: "top",
             status: "success",
             isClosable: true,
           });
@@ -93,15 +94,15 @@ export default function Page() {
 
   return (
     <Box
-      mx={"auto"}
-      my={20}
-      p={10}
-      maxW="md"
+      mx="auto"
+      my={[10, 20, 40]}
+      p={[5, 10]}
+      maxW={["90%", "80%", "md"]}
       borderWidth="2px"
       borderRadius="lg"
       overflow="hidden"
     >
-      <Heading as="h2" size="xl">
+      <Heading as="h2" size="xl" textAlign="center" mb={6}>
         Register
       </Heading>
       <form onSubmit={formik.handleSubmit}>
@@ -115,7 +116,6 @@ export default function Page() {
         {formik.errors.name && (
           <div style={{ color: "red" }}>{formik.errors.name}</div>
         )}
-
         <InputText
           onChange={formik.handleChange}
           label="Email"
@@ -126,7 +126,6 @@ export default function Page() {
         {formik.errors.email && (
           <div style={{ color: "red" }}>{formik.errors.email}</div>
         )}
-
         <SelectGender
           value={formik.values.gender}
           onChange={formik.handleChange}
@@ -134,8 +133,7 @@ export default function Page() {
         {formik.errors.gender && (
           <div style={{ color: "red" }}>{formik.errors.gender}</div>
         )}
-
-        <Button type="submit" width={"100%"} mt={16} colorScheme="blue">
+        <Button type="submit" width="100%" mt={8} colorScheme="blue">
           Submit
         </Button>
       </form>

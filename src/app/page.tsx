@@ -39,6 +39,7 @@ export default function Home() {
   const [maxPageDashboard, setMaxPageDashboard] = useState(1);
   const [isTokenValid, setIsTokenValid] = useState(true);
   const [searchQuery, setSearchQuery] = useState("");
+  const [activeTabIndex, setActiveTabIndex] = useState(0); // Track active tab
 
   const { blogs: allBlogs, loading: blogsLoading } = useFetchBlogs();
   const { users, loading: usersLoading } = useFetchUsers();
@@ -99,6 +100,7 @@ export default function Home() {
   }, [searchQuery, pageDashboard, dashboardBlogs, isTokenValid]);
 
   const handleTabChange = (index: number) => {
+    setActiveTabIndex(index);
     if (index === 1 && !validateToken(toast)) {
       setIsTokenValid(false);
     }
@@ -117,6 +119,7 @@ export default function Home() {
             <Tabs
               position="relative"
               variant="unstyled"
+              index={activeTabIndex}
               onChange={handleTabChange}
             >
               <TabList>
@@ -154,7 +157,7 @@ export default function Home() {
                   ) : (
                     <Center my={16}>
                       <Text>
-                        Please log in to access the your blog.
+                        Please log in to access your blog.
                         <Link
                           color={"blue.400"}
                           fontWeight={"bold"}
